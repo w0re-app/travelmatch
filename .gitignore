@@ -1,0 +1,14 @@
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+.build/
+
+# Firebase - Codemagic build sırasında env var'dan üretiyor, repoya gitmesin
+GoogleService-Info.plist
+
+# macOS
+.DS_Store
+
+# Codemagic
+build/

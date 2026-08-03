@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // users/{uid}
+    match /users/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.auth.uid == uid;
+      // blockedUids yalnızca Cloud Functions (performBlock) tarafından değiştirilir —
+      // client bu alana doğrudan yazamaz, engelleme/eşleşme kapatma tutarlılığı bozulmasın.
+      allow update: if isSignedIn() && request.auth.uid == uid
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(["blockedUids"]);
+    }
+
+    // trips/{tripId} — artık yalnızca submitTrip Cloud Function'ı (Admin SDK)
+    // yazabilir. Client sadece okuyabilir (eşleşme havuzunda görünmek için).
+    match /trips/{tripId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // documentClaims/{hash} — biniş kartı/rezervasyon belgesi tekillik kayıtları.
+    // Yalnızca submitTrip Cloud Function'ı (Admin SDK) erişebilir; client'tan
+    // hiçbir şekilde okunamaz/yazılamaz (ham belge verisi burada yok, sadece
+    // geri döndürülemez hash + sahibi tutuluyor).
+    match /documentClaims/{hash} {
+      allow read, write: if false;
+    }
+
+    // blocks/{blockerUid_blockedUid} — yalnızca Cloud Functions (Admin SDK) erişebilir.
+    match /blocks/{blockId} {
+      allow read, write: if false;
+    }
+
+    // reports/{reportId} — moderasyon kayıtları, client'tan asla okunamaz/yazılamaz.
+    match /reports/{reportId} {
+      allow read, write: if false;
+    }
+
+    // matches/{matchId} — sadece taraflar okuyabilir. Yazma yalnızca
+    // Cloud Functions (Admin SDK) üzerinden yapılır, client'tan yazma kapalı.
+    match /matches/{matchId} {
+      allow read: if isSignedIn() && request.auth.uid in resource.data.participants;
+      allow write: if false;
+
+      match /messages/{messageId} {
+        allow read: if isSignedIn() && request.auth.uid in get(/databases/$(database)/documents/matches/$(matchId)).data.participants;
+        allow create: if isSignedIn()
+          && request.auth.uid in get(/databases/$(database)/documents/matches/$(matchId)).data.participants
+          && get(/databases/$(database)/documents/matches/$(matchId)).data.status == "accepted"
+          && request.resource.data.senderUid == request.auth.uid;
+        allow update, delete: if false;
+      }
+    }
+  }
+}

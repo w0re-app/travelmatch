@@ -1,0 +1,136 @@
+workflows:
+  firebase-deploy:
+    name: TravelMatch — Firebase Rules Deploy
+    max_build_duration: 15
+    instance_type: linux
+    environment:
+      groups:
+        # Codemagic UI'da oluşturacağın grup — bkz. DEPLOYMENT.md "Firebase deploy (Mac'siz)".
+        - firebase_deploy_credentials   # FIREBASE_SERVICE_ACCOUNT_BASE64, FIREBASE_PROJECT_ID
+      node: latest
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+    scripts:
+      - name: Servis hesabı anahtarını çöz
+        script: |
+          echo $FIREBASE_SERVICE_ACCOUNT_BASE64 | base64 --decode > $CM_BUILD_DIR/service-account.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$CM_BUILD_DIR/service-account.json" >> $CM_ENV
+
+      - name: Firebase CLI'ı kur
+        script: npm install -g firebase-tools
+
+      - name: Firestore kurallarını deploy et
+        script: |
+          firebase deploy --only firestore:rules --project "$FIREBASE_PROJECT_ID" --non-interactive
+
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com   # kendi e-postanla değiştir
+        notify:
+          success: true
+          failure: true
+
+  ios-app-store:
+    name: TravelMatch — App Store
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      # Codemagic Team Settings > Integrations > Developer Portal altında bağladığın
+      # App Store Connect API key entegrasyonunun adı (bkz. DEPLOYMENT.md adım 4).
+      app_store_connect: travelmatch_api_key
+    environment:
+      groups:
+        # Codemagic UI > Team/Application > Environment variables altında oluşturulacak
+        # gruplar. İçerikleri için DEPLOYMENT.md'ye bak.
+        - firebase_config       # GOOGLE_SERVICE_INFO_PLIST_BASE64
+        - app_signing           # BUNDLE_ID
+        - certificate_credentials  # CERTIFICATE_PRIVATE_KEY
+      vars:
+        XCODE_SCHEME: "TravelMatch"
+        XCODE_PROJECT: "TravelMatch.xcodeproj"
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+    scripts:
+      - name: Firebase yapılandırma dosyasını çöz
+        script: |
+          echo $GOOGLE_SERVICE_INFO_PLIST_BASE64 | base64 --decode > $CM_BUILD_DIR/TravelMatch/GoogleService-Info.plist
+
+      - name: XcodeGen'i kur
+        script: brew install xcodegen
+
+      - name: .xcodeproj'u project.yml'den üret
+        script: |
+          cd $CM_BUILD_DIR
+          xcodegen generate
+
+      - name: Swift Package bağımlılıklarını çöz
+        script: |
+          xcodebuild -resolvePackageDependencies \
+            -project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -clonedSourcePackagesDirPath "$CM_BUILD_DIR/SourcePackages"
+
+      - name: Keychain'i imzalama için hazırla
+        script: keychain initialize
+
+      - name: App Store Connect'ten imzalama dosyalarını çek
+        script: |
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --create
+
+      - name: Sertifikayı keychain'e ekle
+        script: keychain add-certificates
+
+      - name: Xcode projesine imzalama ayarlarını uygula
+        script: |
+          xcode-project use-profiles \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT"
+
+      - name: Build numarasını App Store Connect'teki en güncel numaraya göre artır
+        script: |
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$BUNDLE_ID" || echo 0)
+          cd $CM_BUILD_DIR
+          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+
+      - name: .ipa oluştur
+        script: |
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --archive-flags="-clonedSourcePackagesDirPath $CM_BUILD_DIR/SourcePackages -skipPackagePluginValidation -skipMacroValidation"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+
+    publishing:
+      # Build başarılı olunca otomatik TestFlight'a yüklenir. App Store'a canlı
+      # yayına gönderme adımı bilinçli olarak elle bırakıldı (bkz. DEPLOYMENT.md) —
+      # ilk sürümde ekran görüntüsü/açıklama gibi App Store Connect meta verilerini
+      # doldurup incelemeye SEN göndermelisin.
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - App Store Connect Users   # TestFlight'ta test grubunun adı (değiştirilebilir)
+        submit_to_app_store: false
+      email:
+        recipients:
+          - your-email@example.com   # kendi e-postanla değiştir
+        notify:
+          success: true
+          failure: true

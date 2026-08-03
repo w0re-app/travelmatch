@@ -1,0 +1,16 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // chatImages/{matchId}/{fileName} — yalnızca eşleşmenin iki tarafı erişebilir.
+    // Firestore'daki matches/{matchId} dokümanına bakarak participants kontrolü yapılır.
+    match /chatImages/{matchId}/{fileName} {
+      allow read, write: if request.auth != null
+        && request.auth.uid in firestore.get(/databases/(default)/documents/matches/$(matchId)).data.participants;
+
+      // Tek dosya en fazla 8 MB, yalnızca görsel içerik.
+      allow write: if request.resource.size < 8 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}
