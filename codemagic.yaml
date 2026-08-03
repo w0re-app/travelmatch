@@ -114,7 +114,14 @@ workflows:
             --scheme "$XCODE_SCHEME" \
             --archive-xcargs="CODE_SIGN_STYLE=Manual CURRENT_PROJECT_VERSION=$BUILD_NO MARKETING_VERSION=1.0" \
             --archive-flags="-clonedSourcePackagesDirPath $CM_BUILD_DIR/SourcePackages -skipPackagePluginValidation -skipMacroValidation"
-
+            
+      - name: IPA sürüm kontrolü
+        script: |
+          set -e
+          unzip -o -q build/ios/ipa/*.ipa -d /tmp/ipacheck
+          APP_PLIST=$(ls -d /tmp/ipacheck/Payload/*.app)/Info.plist
+          plutil -p "$APP_PLIST" | grep -E "CFBundleVersion|CFBundleShortVersionString"
+          
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
