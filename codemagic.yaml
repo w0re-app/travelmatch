@@ -153,13 +153,13 @@ workflows:
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
 
     publishing:
-      # Build başarılı olunca TestFlight'a yüklenir (dahili test için hemen kullanılabilir).
-      # App Store'a canlı yayına gönderme adımı bilinçli olarak elle bırakıldı:
-      # ekran görüntüsü, açıklama, gizlilik anketi gibi meta verileri App Store
-      # Connect'te doldurup incelemeye SEN göndermelisin (bkz. DEPLOYMENT.md).
+      # Build App Store Connect'e yüklenir ve dahili test için TestFlight'ta
+      # hemen kullanılabilir olur. Aşağıdaki iki adım bilinçli olarak kapalı:
+      #   submit_to_testflight  -> harici beta review'a gönderim (test bilgisi ister)
+      #   submit_to_app_store   -> canlı yayına gönderim (meta verileri sen doldurursun)
       app_store_connect:
         auth: integration
-        submit_to_testflight: true
+        submit_to_testflight: false
         submit_to_app_store: false
       email:
         recipients:
