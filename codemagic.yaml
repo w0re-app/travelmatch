@@ -5,7 +5,7 @@ workflows:
     instance_type: linux
     environment:
       groups:
-        # Codemagic UI'da oluşturacağın grup — bkz. DEPLOYMENT.md "Firebase deploy (Mac'siz)".
+        # Codemagic UI'da oluşturulan grup — bkz. DEPLOYMENT.md "Firebase deploy (Mac'siz)".
         - firebase_deploy_credentials   # FIREBASE_SERVICE_ACCOUNT_BASE64, FIREBASE_PROJECT_ID
       node: latest
     triggering:
@@ -30,9 +30,9 @@ workflows:
     publishing:
       email:
         recipients:
-          - your-email@example.com   # kendi e-postanla değiştir
+          - umut.gurrkann@icloud.com
         notify:
-          success: true
+          success: false
           failure: true
 
   ios-app-store:
@@ -40,21 +40,21 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
     integrations:
-      # Codemagic Team Settings > Integrations > Developer Portal altında bağladığın
+      # Codemagic Team Settings > Integrations > Developer Portal altında bağlanan
       # App Store Connect API key entegrasyonunun adı (bkz. DEPLOYMENT.md adım 4).
       app_store_connect: travelmatch_api_key
     environment:
       groups:
-        # Codemagic UI > Team/Application > Environment variables altında oluşturulacak
-        # gruplar. İçerikleri için DEPLOYMENT.md'ye bak.
-        - firebase_config       # GOOGLE_SERVICE_INFO_PLIST_BASE64
-        - app_signing           # BUNDLE_ID
+        # Codemagic UI > Team/Application > Environment variables altındaki gruplar.
+        # İçerikleri için DEPLOYMENT.md'ye bak.
+        - firebase_config          # GOOGLE_SERVICE_INFO_PLIST_BASE64
+        - app_signing              # BUNDLE_ID
         - certificate_credentials  # CERTIFICATE_PRIVATE_KEY
       vars:
         XCODE_SCHEME: "TravelMatch"
         XCODE_PROJECT: "TravelMatch.xcodeproj"
+        APP_VERSION: "1.0"
       xcode: latest
-      cocoapods: default
     triggering:
       events:
         - push
@@ -112,16 +112,27 @@ workflows:
           xcode-project build-ipa \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
-            --archive-xcargs="CODE_SIGN_STYLE=Manual CURRENT_PROJECT_VERSION=$BUILD_NO MARKETING_VERSION=1.0" \
+            --archive-xcargs="CODE_SIGN_STYLE=Manual CURRENT_PROJECT_VERSION=$BUILD_NO MARKETING_VERSION=$APP_VERSION" \
             --archive-flags="-clonedSourcePackagesDirPath $CM_BUILD_DIR/SourcePackages -skipPackagePluginValidation -skipMacroValidation"
-            
-      - name: IPA sürüm kontrolü
+
+      - name: IPA doğrulaması (sürüm + ikon)
         script: |
           set -e
+          rm -rf /tmp/ipacheck
           unzip -o -q build/ios/ipa/*.ipa -d /tmp/ipacheck
-          APP_PLIST=$(ls -d /tmp/ipacheck/Payload/*.app)/Info.plist
-          plutil -p "$APP_PLIST" | grep -E "CFBundleVersion|CFBundleShortVersionString"
-          
+          APP_DIR=$(ls -d /tmp/ipacheck/Payload/*.app)
+
+          echo "--- Sürüm ---"
+          plutil -p "$APP_DIR/Info.plist" | grep -E "CFBundleVersion|CFBundleShortVersionString"
+
+          echo "--- App icon ---"
+          if ls "$APP_DIR" | grep -q "AppIcon60x60@2x.png"; then
+            echo "120x120 ikon bulundu."
+          else
+            echo "HATA: 120x120 app icon eksik — yükleme reddedilir."
+            exit 1
+          fi
+
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
@@ -129,19 +140,17 @@ workflows:
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
 
     publishing:
-      # Build başarılı olunca otomatik TestFlight'a yüklenir. App Store'a canlı
-      # yayına gönderme adımı bilinçli olarak elle bırakıldı (bkz. DEPLOYMENT.md) —
-      # ilk sürümde ekran görüntüsü/açıklama gibi App Store Connect meta verilerini
-      # doldurup incelemeye SEN göndermelisin.
+      # Build başarılı olunca TestFlight'a yüklenir (dahili test için hemen kullanılabilir).
+      # App Store'a canlı yayına gönderme adımı bilinçli olarak elle bırakıldı:
+      # ekran görüntüsü, açıklama, gizlilik anketi gibi meta verileri App Store
+      # Connect'te doldurup incelemeye SEN göndermelisin (bkz. DEPLOYMENT.md).
       app_store_connect:
         auth: integration
         submit_to_testflight: true
-        beta_groups:
-          - App Store Connect Users   # TestFlight'ta test grubunun adı (değiştirilebilir)
         submit_to_app_store: false
       email:
         recipients:
-          - your-email@example.com   # kendi e-postanla değiştir
+          - umut.gurrkann@icloud.com
         notify:
           success: true
           failure: true
