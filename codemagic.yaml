@@ -98,17 +98,21 @@ workflows:
           xcode-project use-profiles \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT"
 
-      - name: Build numarasını App Store Connect'teki en güncel numaraya göre artır
+      - name: Build numarasını hesapla
         script: |
-          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$BUNDLE_ID" || echo 0)
-          cd $CM_BUILD_DIR
-          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+          set -e
+          LATEST=$(app-store-connect get-latest-app-store-build-number "$BUNDLE_ID" 2>/dev/null || echo 0)
+          [ -z "$LATEST" ] && LATEST=0
+          BUILD_NO=$((LATEST + 1))
+          echo "Yeni build numarası: $BUILD_NO"
+          echo "BUILD_NO=$BUILD_NO" >> $CM_ENV
 
       - name: .ipa oluştur
         script: |
           xcode-project build-ipa \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
+            --archive-xcargs="CODE_SIGN_STYLE=Manual CURRENT_PROJECT_VERSION=$BUILD_NO MARKETING_VERSION=1.0" \
             --archive-flags="-clonedSourcePackagesDirPath $CM_BUILD_DIR/SourcePackages -skipPackagePluginValidation -skipMacroValidation"
 
     artifacts:
