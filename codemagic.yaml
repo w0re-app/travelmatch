@@ -54,6 +54,8 @@ workflows:
         XCODE_SCHEME: "TravelMatch"
         XCODE_PROJECT: "TravelMatch.xcodeproj"
         APP_VERSION: "1.0"
+        # App Store Connect'teki sayısal Apple ID (bundle ID değil!)
+        APP_ID: "6797613938"
       xcode: latest
     triggering:
       events:
@@ -101,10 +103,21 @@ workflows:
       - name: Build numarasını hesapla
         script: |
           set -e
-          LATEST=$(app-store-connect get-latest-app-store-build-number "$BUNDLE_ID" 2>/dev/null || echo 0)
-          [ -z "$LATEST" ] && LATEST=0
+          # Hem App Store hem TestFlight'taki en yüksek numarayı verir.
+          # Dikkat: parametre sayısal APP_ID, bundle ID değil.
+          LATEST=$(app-store-connect get-latest-build-number "$APP_ID" || echo "")
+          case "$LATEST" in
+            ''|*[!0-9]*) LATEST=0 ;;
+          esac
           BUILD_NO=$((LATEST + 1))
-          echo "Yeni build numarası: $BUILD_NO"
+
+          # Güvenlik ağı: Codemagic'in kendi sayacı daha yüksekse onu kullan.
+          if [ "$BUILD_NUMBER" -gt "$BUILD_NO" ]; then
+            BUILD_NO=$BUILD_NUMBER
+          fi
+
+          echo "App Store Connect'teki son numara: $LATEST"
+          echo "Kullanılacak build numarası: $BUILD_NO"
           echo "BUILD_NO=$BUILD_NO" >> $CM_ENV
 
       - name: .ipa oluştur
