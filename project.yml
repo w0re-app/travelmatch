@@ -22,7 +22,7 @@ targets:
       properties:
         com.apple.developer.applesignin:
           - Default
-        aps-environment: development
+        aps-environment: production
      settings:
       base:
         SWIFT_VERSION: "5.0"
