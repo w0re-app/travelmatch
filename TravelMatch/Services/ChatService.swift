@@ -1,16 +1,29 @@
 import Foundation
 import UIKit
 import FirebaseFirestore
-import FirebaseStorage
 
+/// Sohbet mesajları Firestore'da, fotoğraflar Supabase Storage'da.
+/// (Firebase Storage Blaze planı gerektirdiği için kullanılmıyor.)
 final class ChatService {
 
     static let shared = ChatService()
     private init() {}
 
     private let db = Firestore.firestore()
-    private let storage = Storage.storage()
     private var listener: ListenerRegistration?
+
+    /// Sohbet ekranı açıldığında bir kez çağrılmalı.
+    /// Supabase'deki üyelik kaydı olmadan o sohbetin fotoğraflarına
+    /// ne yazılabilir ne de okunabilir (RLS politikaları buna bakıyor).
+    func sohbeteBaglan(matchId: String) async {
+        do {
+            try await SupabaseDepo.ortak.sohbeteKatil(sohbetId: matchId)
+        } catch {
+            // Üyelik kaydı başarısız olsa da metin mesajlaşması çalışmalı;
+            // yalnızca fotoğraf gönderimi/gösterimi etkilenir.
+            print("Supabase sohbet üyeliği kaydedilemedi: \(error.localizedDescription)")
+        }
+    }
 
     /// Client doğrudan yazar; Firestore kuralları yalnızca `status == accepted`
     /// olan eşleşmelerde mesaj eklenmesine izin verir (bkz. firestore.rules).
@@ -20,7 +33,7 @@ final class ChatService {
             senderUid: senderUid,
             type: isEmojiOnly ? "emoji" : "text",
             content: content,
-            imageURL: nil, imageWidth: nil, imageHeight: nil,
+            imagePath: nil, imageWidth: nil, imageHeight: nil,
             sentAt: nil
         )
         _ = try db.collection("matches").document(matchId)
@@ -28,27 +41,18 @@ final class ChatService {
             .addDocument(from: dto)
     }
 
-    /// Fotoğrafı Storage'a yükler, sonra mesaj dokümanını oluşturur.
-    /// Storage yolu `chatImages/{matchId}/{uuid}.jpg` — kurallar yalnızca
-    /// eşleşmenin iki tarafının erişimine izin verir (bkz. storage.rules).
+    /// Fotoğrafı Supabase Storage'a yükler, sonra mesaj dokümanını oluşturur.
+    /// Firestore'a kalıcı bir URL değil, dosya YOLU yazılır — indirme adresi
+    /// gösterim anında imzalı URL olarak üretilir (bkz. `fotografUrl`).
     func sendImage(matchId: String, senderUid: String, image: UIImage) async throws {
-        guard let jpegData = image.jpegData(compressionQuality: 0.72) else {
-            throw NSError(domain: "ChatService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Görsel sıkıştırılamadı."])
-        }
-
-        let fileName = "\(UUID().uuidString).jpg"
-        let ref = storage.reference().child("chatImages/\(matchId)/\(fileName)")
-        let metadata = StorageMetadata()
-        metadata.contentType = "image/jpeg"
-
-        _ = try await ref.putDataAsync(jpegData, metadata: metadata)
-        let downloadURL = try await ref.downloadURL()
+        // Sıkıştırma SupabaseDepo içinde yapılıyor (uzun kenar 1600 px, JPEG).
+        let yol = try await SupabaseDepo.ortak.sohbetFotografiYukle(image, sohbetId: matchId)
 
         let dto = MessageDTO(
             senderUid: senderUid,
             type: "image",
             content: "",
-            imageURL: downloadURL.absoluteString,
+            imagePath: yol,
             imageWidth: image.size.width,
             imageHeight: image.size.height,
             sentAt: nil
@@ -56,6 +60,13 @@ final class ChatService {
         _ = try db.collection("matches").document(matchId)
             .collection("messages")
             .addDocument(from: dto)
+    }
+
+    /// Mesajdaki yol için geçici (1 saat) indirme adresi üretir.
+    /// Görsel gösterilirken çağrılır; süresi dolarsa yeniden çağrılmalı.
+    func fotografUrl(for message: MessageDTO) async throws -> URL? {
+        guard let yol = message.imagePath else { return nil }
+        return try await SupabaseDepo.ortak.sohbetFotografiUrl(yol: yol)
     }
 
     func listenMessages(matchId: String, onUpdate: @escaping ([MessageDTO]) -> Void) {

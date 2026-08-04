@@ -47,7 +47,8 @@ struct MessageDTO: Codable {
     var senderUid: String
     var type: String        // "text" | "image" | "emoji"
     var content: String     // metin içeriği ya da emoji karakteri (görsel mesajlarda boş olabilir)
-    var imageURL: String?   // yalnızca type == "image"
+    var imagePath: String?  // Supabase Storage yolu: {matchId}/{uid}-{uuid}.jpg
+                            // (kalıcı URL değil — indirme adresi imzalı olarak üretilir)
     var imageWidth: Double?
     var imageHeight: Double?
     var sentAt: Timestamp?

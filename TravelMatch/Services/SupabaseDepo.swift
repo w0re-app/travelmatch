@@ -18,7 +18,7 @@ final class SupabaseDepo {
         static let url = URL(string: "https://jrrekhuftisfbflsabub.supabase.co")!
         // Project Settings > API Keys > Publishable key
         // (secret key ASLA buraya yazılmaz)
-        static let anahtar = "sb_publishable_sb_publishable_jeeaXmpmPwUcaIsdG3Pegg_doGsm_Vj"
+        static let anahtar = "sb_publishable_jeeaXmpmPwUcaIsdG3Pegg_doGsm_Vj"
 
         static let profilKovasi = "profil-fotograflari"
         static let sohbetKovasi = "sohbet-fotograflari"
