@@ -14,7 +14,7 @@ struct ChatView: View {
     @State private var photoPickerItem: PhotosPickerItem?
     @State private var showGalleryPicker = false
     @State private var showPhotoUnavailableAlert = false
-    @State private var fullScreenImageURL: String?
+    @State private var fullScreenImagePath: String?
 
     var body: some View {
         ZStack {
@@ -47,10 +47,10 @@ struct ChatView: View {
             }
         }
         .fullScreenCover(item: Binding(
-            get: { fullScreenImageURL.map { IdentifiableString(value: $0) } },
-            set: { fullScreenImageURL = $0?.value }
+            get: { fullScreenImagePath.map { IdentifiableString(value: $0) } },
+            set: { fullScreenImagePath = $0?.value }
         )) { wrapped in
-            FullScreenImageViewer(imageURL: wrapped.value)
+            FullScreenImageViewer(imagePath: wrapped.value)
         }
         .fullScreenCover(isPresented: $showCamera) {
             CameraCaptureView { image in
@@ -110,7 +110,7 @@ struct ChatView: View {
                                 message: message,
                                 isFirstInGroup: index == 0,
                                 isLastInGroup: index == group.count - 1,
-                                onTapImage: { url in fullScreenImageURL = url }
+                                onTapImage: { path in fullScreenImagePath = path }
                             )
                         }
                         if let last = group.last {
@@ -264,18 +264,18 @@ private struct MessageRow: View {
                 .font(.system(size: 44))
 
         case .image:
-            if let urlString = message.imageURL, let url = URL(string: urlString) {
+            // message.imageURL artık kalıcı bir adres değil, Supabase Storage yolu.
+            if let path = message.imageURL {
                 Button {
-                    onTapImage(urlString)
+                    onTapImage(path)
                 } label: {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image.resizable().scaledToFill()
-                        case .failure:
+                    SupabaseImageView(path: path) { image in
+                        image.resizable().scaledToFill()
+                    } placeholder: { failed in
+                        if failed {
                             Theme.glassFill
                                 .overlay(Image(systemName: "photo").foregroundStyle(Theme.textTertiary))
-                        default:
+                        } else {
                             Theme.glassFill.overlay(ProgressView().tint(.white))
                         }
                     }
