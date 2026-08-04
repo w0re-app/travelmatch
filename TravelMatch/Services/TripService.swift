@@ -109,38 +109,75 @@ final class TripService {
 
     /// Aynı `locationIdentifier` + tarih aralığını paylaşan, gizli modda olmayan
     /// ve birbirini engellememiş diğer kullanıcıları gerçek zamanlı dinler.
-    func listenFellowTravelers(tripDocId: String, locationIdentifier: String, currentUid: String, myBlockedUids: [String], onUpdate: @escaping ([TripFellowTraveler]) -> Void) {
+    ///
+    /// Tarih çakışması: (onun başlangıcı <= benim bitişim) VE (onun bitişi >= benim başlangıcım).
+    /// Firestore aynı sorguda iki farklı alanda aralık filtresine izin vermediği için
+    /// ilk koşul sorguda, ikincisi client tarafında uygulanıyor.
+    ///
+    /// NOT: Bu sorgu için Firestore bileşik dizin ister. İlk çalıştırmada konsolda
+    /// çıkan hata mesajındaki bağlantıya tıklayarak dizini tek tuşla oluşturabilirsin.
+    func listenFellowTravelers(
+        tripDocId: String,
+        locationIdentifier: String,
+        myStartDate: Date,
+        myEndDate: Date,
+        currentUid: String,
+        myBlockedUids: [String],
+        onUpdate: @escaping ([TripFellowTraveler]) -> Void
+    ) {
         fellowTravelersListener?.remove()
 
         fellowTravelersListener = db.collection("trips")
             .whereField("locationIdentifier", isEqualTo: locationIdentifier)
-            .addSnapshotListener { snapshot, _ in
-                guard let docs = snapshot?.documents else { return }
+            .whereField("startDate", isLessThanOrEqualTo: Timestamp(date: myEndDate))
+            .addSnapshotListener { [weak self] snapshot, error in
+                guard let self, let docs = snapshot?.documents else {
+                    if let error { print("Yol arkadaşı sorgusu başarısız: \(error.localizedDescription)") }
+                    return
+                }
+
                 Task {
+                    // Aynı kullanıcının birden fazla trip'i olabilir; her biri için
+                    // ayrı okuma yapmamak adına users belgelerini önbelleğe alıyoruz.
+                    var userCache: [String: UserDTO] = [:]
                     var results: [TripFellowTraveler] = []
+
                     for doc in docs where doc.documentID != tripDocId {
-                        guard let trip = try? doc.data(as: TripDTO.self),
-                              let ownerUid = trip.ownerUid as String?,
-                              ownerUid != currentUid,
-                              !myBlockedUids.contains(ownerUid),
-                              let userSnap = try? await self.db.collection("users").document(ownerUid).getDocument(),
-                              let userDto = try? userSnap.data(as: UserDTO.self),
-                              userDto.isIncognito == false,
+                        guard let trip = try? doc.data(as: TripDTO.self) else { continue }
+
+                        // Tarih çakışmasının ikinci yarısı.
+                        guard trip.endDate.dateValue() >= myStartDate else { continue }
+
+                        let ownerUid = trip.ownerUid
+                        guard ownerUid != currentUid, !myBlockedUids.contains(ownerUid) else { continue }
+
+                        let userDto: UserDTO
+                        if let cached = userCache[ownerUid] {
+                            userDto = cached
+                        } else {
+                            guard let snap = try? await self.db.collection("users").document(ownerUid).getDocument(),
+                                  let fetched = try? snap.data(as: UserDTO.self) else { continue }
+                            userCache[ownerUid] = fetched
+                            userDto = fetched
+                        }
+
+                        guard userDto.isIncognito == false,
                               !userDto.blockedUids.contains(currentUid) else { continue }
 
                         let user = AppUser(
-                            id: userDto.id ?? UUID().uuidString,
+                            id: userDto.id ?? ownerUid,
                             fullName: userDto.fullName,
                             age: userDto.age,
                             bio: userDto.bio,
                             avatarSystemImage: "person.crop.circle.fill",
                             intentTags: userDto.intentTags.compactMap { IntentTag(rawValue: $0) }
                         )
+
                         results.append(TripFellowTraveler(
-                            id: UUID().uuidString,
+                            id: doc.documentID,
                             user: user,
                             sharedTrip: Trip(
-                                id: trip.id ?? "",
+                                id: trip.id ?? doc.documentID,
                                 type: trip.type == "flight" ? .flight : .hotel,
                                 referenceCode: "",
                                 locationIdentifier: trip.locationIdentifier,
