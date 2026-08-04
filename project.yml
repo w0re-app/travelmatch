@@ -8,6 +8,9 @@ packages:
   Firebase:
     url: https://github.com/firebase/firebase-ios-sdk
     from: 10.0.0
+  Supabase:
+    url: https://github.com/supabase/supabase-swift
+    from: 2.0.0
 targets:
   TravelMatch:
     type: application
@@ -38,6 +41,7 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         INFOPLIST_KEY_NSCameraUsageDescription: "Biniş kartını veya rezervasyon belgeni taramak için kameraya ihtiyacımız var."
         INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Sohbette fotoğraf paylaşabilmen için galerine erişim gerekiyor."
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
         ENABLE_PREVIEWS: YES
     dependencies:
       - package: Firebase
@@ -50,6 +54,8 @@ targets:
         product: FirebaseStorage
       - package: Firebase
         product: FirebaseMessaging
+      - package: Supabase
+        product: Supabase
 schemes:
   TravelMatch:
     build:
