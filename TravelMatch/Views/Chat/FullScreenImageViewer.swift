@@ -1,8 +1,45 @@
 import SwiftUI
 
+/// Supabase Storage'daki bir dosya yolunu imzalı URL'e çevirip gösterir.
+/// Firestore'da kalıcı URL tutulmuyor (bucket private), bu yüzden adres
+/// gösterim anında üretiliyor ve 1 saat geçerli oluyor.
+struct SupabaseImageView<Content: View, Placeholder: View>: View {
+    let path: String
+    @ViewBuilder var content: (Image) -> Content
+    @ViewBuilder var placeholder: (Bool) -> Placeholder   // Bool: hata mı?
+
+    @State private var url: URL?
+    @State private var failed = false
+
+    var body: some View {
+        Group {
+            if let url {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image): content(image)
+                    case .failure:            placeholder(true)
+                    default:                  placeholder(false)
+                    }
+                }
+            } else {
+                placeholder(failed)
+            }
+        }
+        .task(id: path) {
+            failed = false
+            url = nil
+            do {
+                url = try await SupabaseDepo.ortak.sohbetFotografiUrl(yol: path)
+            } catch {
+                failed = true
+            }
+        }
+    }
+}
+
 struct FullScreenImageViewer: View {
     @Environment(\.dismiss) private var dismiss
-    let imageURL: String
+    let imagePath: String
 
     @State private var scale: CGFloat = 1
 
@@ -10,23 +47,22 @@ struct FullScreenImageViewer: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            AsyncImage(url: URL(string: imageURL)) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .scaleEffect(scale)
-                        .gesture(
-                            MagnificationGesture()
-                                .onChanged { value in scale = max(1, min(value, 4)) }
-                                .onEnded { _ in withAnimation(.spring()) { scale = 1 } }
-                        )
-                case .failure:
+            SupabaseImageView(path: imagePath) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .scaleEffect(scale)
+                    .gesture(
+                        MagnificationGesture()
+                            .onChanged { value in scale = max(1, min(value, 4)) }
+                            .onEnded { _ in withAnimation(.spring()) { scale = 1 } }
+                    )
+            } placeholder: { failed in
+                if failed {
                     Image(systemName: "photo.fill")
                         .font(.system(size: 40))
                         .foregroundStyle(.white.opacity(0.5))
-                default:
+                } else {
                     ProgressView().tint(.white)
                 }
             }
