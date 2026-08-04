@@ -2,46 +2,75 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ⚠️ GEÇİCİ MİMARİ NOTU
-    // Bu dosya, Blaze faturalandırma planı aktif olana kadar Cloud Functions'sız
-    // çalışabilmek için gevşetildi. Orijinal (Cloud Functions'ın tüm yazma işlemlerini
-    // tekelinde tuttuğu, daha güvenli) hali `firestore.rules.cloudfunctions-backup`
-    // dosyasında duruyor. Blaze aktif olup `firebase deploy --only functions`
-    // çalıştırıldığında, o dosyanın içeriğini buraya geri kopyala.
+    // MİMARİ NOTU
+    // Cloud Functions kullanılmıyor (Blaze planı açılamadı). Client doğrudan
+    // yazıyor, bu yüzden sunucu tarafında yapılan kontrollerin bir kısmı
+    // buraya taşındı. Sunucu gerektiren üç iş Supabase Edge Functions'a
+    // taşınacak: uçuş doğrulama, push bildirimi, zamanlanmış temizlik.
+    //
+    // Fonksiyonların tüm yazmayı tekelinde tuttuğu sıkı sürüm:
+    // firestore.rules.cloudfunctions-backup
 
     function isSignedIn() {
       return request.auth != null;
     }
 
+    // Bir alanın değişmediğini doğrular (yoksa varsayılanla karşılaştırır).
+    function unchanged(field, def) {
+      return request.resource.data.get(field, def) == resource.data.get(field, def);
+    }
+
     // users/{uid}
     match /users/{uid} {
       allow read: if isSignedIn();
-      allow create: if isSignedIn() && request.auth.uid == uid;
-      // GEÇİCİ: blockedUids artık client (ModerationService) tarafından doğrudan
-      // yazılıyor — yalnızca kendi belgesini güncelleyebilir.
-      allow update: if isSignedIn() && request.auth.uid == uid;
-    }
 
-    // trips/{tripId} — GEÇİCİ: client doğrudan yazıyor (TripService).
-    match /trips/{tripId} {
-      allow read: if isSignedIn();
-      allow create: if isSignedIn() && request.resource.data.ownerUid == request.auth.uid;
-      // Sahibi güncelleyebilir (örn. güzergah/plannedWaypoints güncellemesi).
-      allow update: if isSignedIn() && resource.data.ownerUid == request.auth.uid;
+      allow create: if isSignedIn()
+        && request.auth.uid == uid
+        // Kimse kendini doğrulanmış olarak oluşturamaz.
+        && request.resource.data.get('isVerified', false) == false;
+
+      // Kendi belgesini günceller, ama doğrulanma rozetini kendi veremez.
+      allow update: if isSignedIn()
+        && request.auth.uid == uid
+        && unchanged('isVerified', false);
+
       allow delete: if false;
     }
 
-    // documentClaims/{hash} — biniş kartı/rezervasyon belgesi tekillik kayıtları.
-    // "allow update: if false" kritik: bir kez oluşturulan kayıt hiçbir client
-    // tarafından üzerine yazılamaz, bu da aynı belgenin ikinci bir hesapla
-    // kullanılmasını engeller (bkz. TripService.submitTrip transaction'ı).
+    // trips/{tripId}
+    match /trips/{tripId} {
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        // Uçuş doğrulaması sunucu tarafında yapılıyor; client kendini
+        // doğrulanmış ilan edemez.
+        && request.resource.data.get('isVerified', false) == false;
+
+      // Sahibi güncelleyebilir (örn. plannedWaypoints), ama sahipliği ve
+      // doğrulama durumunu değiştiremez.
+      allow update: if isSignedIn()
+        && resource.data.ownerUid == request.auth.uid
+        && unchanged('ownerUid', '')
+        && unchanged('isVerified', false)
+        && unchanged('documentHash', null)
+        // Güzergah en fazla 10 durak (updateTripRoute'taki sınırın karşılığı).
+        && request.resource.data.get('plannedWaypoints', []).size() <= 10;
+
+      allow delete: if false;
+    }
+
+    // documentClaims/{hash} — biniş kartı / rezervasyon belgesi tekilliği.
+    // create, var olan bir belgeye yapıldığında Firestore tarafından
+    // otomatik reddedilir; update/delete kapalı olduğu için bir kez
+    // yazılan kayıt asla başka bir hesaba geçemez.
     match /documentClaims/{hash} {
       allow read: if false;
       allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
       allow update, delete: if false;
     }
 
-    // blocks/{blockerUid_blockedUid} — GEÇİCİ: client doğrudan yazıyor (ModerationService).
+    // blocks/{blockerUid_blockedUid}
     match /blocks/{blockId} {
       allow read: if false;
       allow create: if isSignedIn() && request.resource.data.blockerUid == request.auth.uid;
@@ -49,31 +78,59 @@ service cloud.firestore {
       allow update: if false;
     }
 
-    // reports/{reportId} — moderasyon kayıtları, yalnızca oluşturan yazabilir,
-    // hiç kimse (raporu açan dahil) okuyamaz/değiştiremez.
+    // reports/{reportId} — yalnızca oluşturulabilir, hiç kimse okuyamaz.
     match /reports/{reportId} {
       allow read: if false;
       allow create: if isSignedIn() && request.resource.data.reporterUid == request.auth.uid;
       allow update, delete: if false;
     }
 
-    // matches/{matchId} — GEÇİCİ: client doğrudan yazıyor (MatchService).
+    // matches/{matchId}
     match /matches/{matchId} {
       allow read: if isSignedIn() && request.auth.uid in resource.data.participants;
+
       allow create: if isSignedIn()
         && request.auth.uid in request.resource.data.participants
+        && request.resource.data.participants.size() == 2
         && request.resource.data.initiatedBy == request.auth.uid
         && request.resource.data.status == "pending";
-      // Taraflardan biri durumu günceller (kabul/red) ya da engelleme sonucu "blocked" yapar.
-      allow update: if isSignedIn() && request.auth.uid in resource.data.participants;
+
+      // KRİTİK: isteği gönderen kendi isteğini kabul edemez.
+      // Kabul/red yalnızca karşı taraftan gelebilir. Engelleme her iki
+      // taraftan gelebilir. Taraflar ve tripId hiç değişemez.
+      allow update: if isSignedIn()
+        && request.auth.uid in resource.data.participants
+        && unchanged('participants', [])
+        && unchanged('initiatedBy', '')
+        && unchanged('tripId', '')
+        && (
+             // Durum değişmiyorsa (örn. son okuma zamanı güncellemesi) serbest.
+             request.resource.data.status == resource.data.status
+             // Engelleme: her iki taraf da yapabilir.
+             || request.resource.data.status == "blocked"
+             // Kabul/red: yalnızca isteği ALAN taraf, ve yalnızca beklemedeyken.
+             || (
+                  request.resource.data.status in ["accepted", "rejected"]
+                  && resource.data.status == "pending"
+                  && request.auth.uid != resource.data.initiatedBy
+                )
+           );
+
       allow delete: if false;
 
       match /messages/{messageId} {
-        allow read: if isSignedIn() && request.auth.uid in get(/databases/$(database)/documents/matches/$(matchId)).data.participants;
+        function match_() {
+          return get(/databases/$(database)/documents/matches/$(matchId)).data;
+        }
+
+        allow read: if isSignedIn()
+          && request.auth.uid in match_().participants;
+
         allow create: if isSignedIn()
-          && request.auth.uid in get(/databases/$(database)/documents/matches/$(matchId)).data.participants
-          && get(/databases/$(database)/documents/matches/$(matchId)).data.status == "accepted"
+          && request.auth.uid in match_().participants
+          && match_().status == "accepted"
           && request.resource.data.senderUid == request.auth.uid;
+
         allow update, delete: if false;
       }
     }
