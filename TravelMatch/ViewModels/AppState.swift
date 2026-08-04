@@ -107,7 +107,7 @@ final class AppState: ObservableObject {
                 self.currentTrip = trip
                 self.currentTripDocId = trip.id
                 self.verificationState = .verified
-                self.startListeningFellowTravelers(tripDocId: trip.id, locationIdentifier: trip.locationIdentifier)
+                self.startListeningFellowTravelers(trip: trip)
             } catch {
                 self.verificationState = .failed(error.localizedDescription)
             }
@@ -123,12 +123,16 @@ final class AppState: ObservableObject {
         fellowTravelers = []
     }
 
-    private func startListeningFellowTravelers(tripDocId: String, locationIdentifier: String) {
+    private func startListeningFellowTravelers(trip: Trip) {
         let uid = currentUser.id
         let myBlockedUids = currentUser.blockedUids
         TripService.shared.listenFellowTravelers(
-            tripDocId: tripDocId, locationIdentifier: locationIdentifier,
-            currentUid: uid, myBlockedUids: myBlockedUids
+            tripDocId: trip.id,
+            locationIdentifier: trip.locationIdentifier,
+            myStartDate: trip.startDate,
+            myEndDate: trip.endDate,
+            currentUid: uid,
+            myBlockedUids: myBlockedUids
         ) { [weak self] travelers in
             Task { @MainActor in
                 self?.fellowTravelers = travelers
@@ -228,6 +232,10 @@ final class AppState: ObservableObject {
     // MARK: - Chat
 
     func startListeningMessages(for match: MatchRecord) {
+        // Supabase tarafındaki sohbet üyeliği — bu kayıt olmadan sohbet
+        // fotoğrafları ne yüklenebilir ne de görüntülenebilir (RLS).
+        Task { await ChatService.shared.sohbeteBaglan(matchId: match.id) }
+
         ChatService.shared.listenMessages(matchId: match.id) { [weak self] dtos in
             Task { @MainActor in
                 guard let self else { return }
@@ -246,7 +254,7 @@ final class AppState: ObservableObject {
                     }()
                     return ChatMessage(
                         id: dto.id ?? UUID().uuidString, matchId: match.id, isFromMe: dto.senderUid == uid,
-                        type: type, content: dto.content, imageURL: dto.imageURL, imageAspectRatio: ratio,
+                        type: type, content: dto.content, imageURL: dto.imagePath, imageAspectRatio: ratio,
                         sentAt: dto.sentAt?.dateValue() ?? Date()
                     )
                 }
