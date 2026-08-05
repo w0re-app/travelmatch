@@ -1,4 +1,5 @@
 import SwiftUI
+import PhotosUI
 
 struct ProfileEditView: View {
     @EnvironmentObject var appState: AppState
@@ -9,7 +10,12 @@ struct ProfileEditView: View {
     @State private var bio: String
     @State private var selectedTags: Set<IntentTag>
 
+    @State private var photoItem: PhotosPickerItem?
+
+    private let userId: String
+
     init(user: AppUser) {
+        userId = user.id
         _fullName = State(initialValue: user.fullName)
         _age = State(initialValue: user.age)
         _bio = State(initialValue: user.bio)
@@ -26,6 +32,12 @@ struct ProfileEditView: View {
                 NightclubBackground()
 
                 Form {
+                    Section {
+                        photoRow
+                    } header: {
+                        Text("Profil Fotoğrafı").foregroundStyle(Theme.textTertiary)
+                    }
+
                     Section {
                         TextField("Ad Soyad", text: $fullName)
                             .foregroundStyle(Theme.textPrimary)
@@ -95,11 +107,57 @@ struct ProfileEditView: View {
                         )
                         dismiss()
                     }
-                    .disabled(!isValid)
+                    .disabled(!isValid || appState.avatarYukleniyor)
                     .fontWeight(.bold)
                 }
             }
+            .onChange(of: photoItem) { _, yeni in
+                Task {
+                    guard let yeni,
+                          let data = try? await yeni.loadTransferable(type: Data.self),
+                          let image = UIImage(data: data) else { return }
+                    appState.uploadProfilePhoto(image)
+                    photoItem = nil
+                }
+            }
         }
+    }
+
+    // MARK: - Fotoğraf satırı
+
+    private var photoRow: some View {
+        HStack(spacing: 16) {
+            AvatarView(uid: userId, boyut: 72, surum: appState.avatarSurumu)
+                .overlay {
+                    if appState.avatarYukleniyor {
+                        Circle().fill(.black.opacity(0.45))
+                            .overlay(ProgressView().tint(.white))
+                    }
+                }
+
+            VStack(alignment: .leading, spacing: 6) {
+                PhotosPicker(selection: $photoItem, matching: .images) {
+                    Text("Fotoğraf Seç")
+                        .font(.subheadline.bold())
+                        .foregroundStyle(Theme.violet)
+                }
+                .disabled(appState.avatarYukleniyor)
+
+                if let hata = appState.avatarHatasi {
+                    Text(hata)
+                        .font(.caption)
+                        .foregroundStyle(Theme.rose)
+                } else {
+                    Text("Fotoğrafın yalnızca aynı seyahati paylaştığın kişilere görünür.")
+                        .font(.caption)
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
+
+            Spacer()
+        }
+        .padding(.vertical, 6)
+        .listRowBackground(Color.clear)
     }
 
     private func toggle(_ tag: IntentTag) {
