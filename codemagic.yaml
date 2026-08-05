@@ -167,14 +167,15 @@ workflows:
         notify:
           success: true
           failure: true
-    
+
   seed-mock-data:
     name: TravelMatch — Test Verisi Yükle
     max_build_duration: 15
     instance_type: linux
+    # triggering bloğu YOK — otomatik çalışmaz, yalnızca elle başlatılır.
     environment:
       groups:
-        - firebase_deploy_credentials
+        - firebase_deploy_credentials   # FIREBASE_SERVICE_ACCOUNT_BASE64, FIREBASE_PROJECT_ID
       node: latest
     scripts:
       - name: Servis hesabı anahtarını çöz
