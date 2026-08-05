@@ -68,14 +68,22 @@ service cloud.firestore {
     // otomatik reddedilir; update/delete kapalı olduğu için bir kez
     // yazılan kayıt asla başka bir hesaba geçemez.
     match /documentClaims/{hash} {
-      allow read: if false;
+      // Cloud Functions yokken tekillik kontrolünü client yapıyor
+      // (TripService transaction içinde okuyor), bu yüzden okuma açık.
+      // Kayıt yalnızca hash'i zaten elinde olan biri için anlamlı.
+      allow read: if isSignedIn();
       allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
       allow update, delete: if false;
     }
 
     // blocks/{blockerUid_blockedUid}
     match /blocks/{blockId} {
-      allow read: if false;
+      // MatchService istek göndermeden önce iki yönlü engelleme kontrolü
+      // yapıyor — okuma kapalıyken bu sorgu permission-denied veriyor ve
+      // eşleşme isteği hiç oluşturulamıyor.
+      // Not: users/{uid}.blockedUids zaten giriş yapmış herkese okunabilir,
+      // dolayısıyla bu izin yeni bir bilgi açığa çıkarmıyor.
+      allow read: if isSignedIn();
       allow create: if isSignedIn() && request.resource.data.blockerUid == request.auth.uid;
       allow delete: if isSignedIn() && resource.data.blockerUid == request.auth.uid;
       allow update: if false;
