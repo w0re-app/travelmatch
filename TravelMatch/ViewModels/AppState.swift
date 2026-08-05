@@ -29,6 +29,7 @@ final class AppState: ObservableObject {
 
     // Matches & Chat
     @Published var matches: [MatchRecord] = []
+    @Published var matchErrorMessage: String?
     @Published var messagesByMatch: [String: [ChatMessage]] = [:]
 
     private let db = Firestore.firestore()
@@ -43,6 +44,7 @@ final class AppState: ObservableObject {
                 if let user {
                     await self.loadOrCreateUserProfile(uid: user.uid)
                     self.startListeningMatches(uid: user.uid)
+                    await self.restoreActiveTrip(uid: user.uid)
                 }
             }
         }
@@ -119,6 +121,18 @@ final class AppState: ObservableObject {
         }
     }
 
+    /// Uygulama yeniden açıldığında devam eden seyahati Firestore'dan geri yükler.
+    /// Bu olmadan kullanıcı her açılışta seyahatini yeniden eklemek zorunda kalıyor
+    /// ve her ekleme yeni bir trip dokümanı yaratıyordu.
+    private func restoreActiveTrip(uid: String) async {
+        guard currentTrip == nil else { return }
+        guard let (docId, trip) = await TripService.shared.aktifSeyahatiGetir(uid: uid) else { return }
+        currentTrip = trip
+        currentTripDocId = docId
+        verificationState = .verified
+        startListeningFellowTravelers(trip: trip)
+    }
+
     func resetTrip() {
         TripService.shared.stopListening()
         currentTrip = nil
@@ -192,18 +206,36 @@ final class AppState: ObservableObject {
     // MARK: - Matching
 
     func sendMatchRequest(to traveler: TripFellowTraveler) {
-        guard let tripId = currentTripDocId else { return }
+        guard let tripId = currentTripDocId else {
+            matchErrorMessage = "Önce bir seyahat eklemelisin."
+            return
+        }
         if let index = fellowTravelers.firstIndex(where: { $0.id == traveler.id }) {
             fellowTravelers[index].matchStatus = .pendingSentByMe
         }
         Task {
-            try? await MatchService.shared.sendMatchRequest(fromUid: self.currentUser.id, toUid: traveler.user.id, tripId: tripId)
+            do {
+                try await MatchService.shared.sendMatchRequest(
+                    fromUid: self.currentUser.id, toUid: traveler.user.id, tripId: tripId
+                )
+            } catch {
+                // Hata sessizce yutulursa istek gitmemiş gibi görünür ama
+                // kullanıcı bunu anlamaz — durumu geri al ve mesajı göster.
+                if let index = self.fellowTravelers.firstIndex(where: { $0.id == traveler.id }) {
+                    self.fellowTravelers[index].matchStatus = .none
+                }
+                self.matchErrorMessage = error.localizedDescription
+            }
         }
     }
 
     func respondToMatch(_ match: MatchRecord, accept: Bool) {
         Task {
-            try? await MatchService.shared.respond(matchId: match.id, accept: accept)
+            do {
+                try await MatchService.shared.respond(matchId: match.id, accept: accept)
+            } catch {
+                self.matchErrorMessage = error.localizedDescription
+            }
         }
     }
 
