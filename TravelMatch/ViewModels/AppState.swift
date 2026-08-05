@@ -22,6 +22,11 @@ final class AppState: ObservableObject {
     // Discovery
     @Published var fellowTravelers: [TripFellowTraveler] = []
 
+    // Profil fotoğrafı — değeri değişince AvatarView'lar yeniden yükler.
+    @Published var avatarSurumu = UUID()
+    @Published var avatarYukleniyor = false
+    @Published var avatarHatasi: String?
+
     // Matches & Chat
     @Published var matches: [MatchRecord] = []
     @Published var messagesByMatch: [String: [ChatMessage]] = [:]
@@ -156,6 +161,23 @@ final class AppState: ObservableObject {
             "bio": bio,
             "intentTags": intentTags.map(\.rawValue)
         ])
+    }
+
+    // MARK: - Profil fotoğrafı
+
+    /// Seçilen görseli Supabase Storage'a yükler ve ekranlardaki avatarları tazeler.
+    func uploadProfilePhoto(_ image: UIImage) {
+        avatarYukleniyor = true
+        avatarHatasi = nil
+        Task {
+            do {
+                try await SupabaseDepo.ortak.profilFotografiYukle(image)
+                self.avatarSurumu = UUID()
+            } catch {
+                self.avatarHatasi = error.localizedDescription
+            }
+            self.avatarYukleniyor = false
+        }
     }
 
     // MARK: - Incognito
