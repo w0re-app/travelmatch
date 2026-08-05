@@ -141,6 +141,10 @@ final class TripService {
                     // ayrı okuma yapmamak adına users belgelerini önbelleğe alıyoruz.
                     var userCache: [String: UserDTO] = [:]
                     var results: [TripFellowTraveler] = []
+                    // Aynı kişi aynı yer için birden fazla seyahat kaydetmiş
+                    // olabilir (uygulamayı kapatıp tekrar eklediğinde). Listede
+                    // bir kez görünsün.
+                    var eklenenSahipler = Set<String>()
 
                     for doc in docs where doc.documentID != tripDocId {
                         guard let trip = try? doc.data(as: TripDTO.self) else { continue }
@@ -149,7 +153,9 @@ final class TripService {
                         guard trip.endDate.dateValue() >= myStartDate else { continue }
 
                         let ownerUid = trip.ownerUid
-                        guard ownerUid != currentUid, !myBlockedUids.contains(ownerUid) else { continue }
+                        guard ownerUid != currentUid,
+                              !myBlockedUids.contains(ownerUid),
+                              !eklenenSahipler.contains(ownerUid) else { continue }
 
                         let userDto: UserDTO
                         if let cached = userCache[ownerUid] {
@@ -189,6 +195,7 @@ final class TripService {
                             ),
                             matchStatus: .none
                         ))
+                        eklenenSahipler.insert(ownerUid)
                     }
                     onUpdate(results)
                 }
@@ -206,6 +213,39 @@ final class TripService {
             ] as [String: Any]
         }
         try await db.collection("trips").document(tripId).updateData(["plannedWaypoints": waypointMaps])
+    }
+
+    /// Uygulama yeniden açıldığında kullanıcının devam eden seyahatini bulur.
+    /// Yalnızca eşitlik sorgusu kullanıyor (bileşik dizin gerektirmesin diye),
+    /// süre kontrolü ve sıralama client tarafında yapılıyor.
+    func aktifSeyahatiGetir(uid: String) async -> (docId: String, trip: Trip)? {
+        guard let snapshot = try? await db.collection("trips")
+            .whereField("ownerUid", isEqualTo: uid)
+            .getDocuments() else { return nil }
+
+        let simdi = Date()
+        let adaylar = snapshot.documents.compactMap { doc -> (String, TripDTO)? in
+            guard let dto = try? doc.data(as: TripDTO.self) else { return nil }
+            // Seyahat bitiminden 24 saat sonrasına kadar aktif sayılır.
+            guard dto.endDate.dateValue().addingTimeInterval(24 * 60 * 60) > simdi else { return nil }
+            return (doc.documentID, dto)
+        }
+        // Birden fazla varsa en yakın tarihli olanı al.
+        guard let (docId, dto) = adaylar.min(by: { $0.1.startDate.dateValue() < $1.1.startDate.dateValue() })
+        else { return nil }
+
+        let trip = Trip(
+            id: docId,
+            type: dto.type == "flight" ? .flight : .hotel,
+            referenceCode: dto.referenceCode,
+            locationIdentifier: dto.locationIdentifier,
+            startDate: dto.startDate.dateValue(),
+            endDate: dto.endDate.dateValue(),
+            isVerified: dto.isVerified,
+            verificationMethod: TripVerificationMethod(rawValue: dto.verificationMethod) ?? .manual,
+            plannedWaypoints: dto.plannedWaypoints
+        )
+        return (docId, trip)
     }
 
     func stopListening() {
