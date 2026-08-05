@@ -13,10 +13,7 @@ struct ProfileView: View {
                 Form {
                     Section {
                         HStack(spacing: 16) {
-                            ZStack {
-                                Circle().fill(Theme.primaryGradient).frame(width: 64, height: 64)
-                                Image(systemName: "person.fill").foregroundStyle(.white).font(.system(size: 26))
-                            }
+                            AvatarView(uid: appState.currentUser.id, boyut: 64, surum: appState.avatarSurumu)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(appState.currentUser.fullName).font(.title3.bold()).foregroundStyle(Theme.textPrimary)
                                 Text("\(appState.currentUser.age) yaşında").foregroundStyle(Theme.textSecondary)
