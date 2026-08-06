@@ -37,7 +37,13 @@ struct HomeView: View {
             }
             .navigationTitle("TravelMatch")
             .toolbarBackground(.hidden, for: .navigationBar)
-            .sheet(isPresented: $showTripEntry) {
+            .sheet(isPresented: $showTripEntry, onDismiss: {
+                // Seyahat kaydedildiyse hemen ardından güzergah adımını aç —
+                // plaj/tarihi yer seçimi akışın doğal parçası olsun.
+                if appState.currentTrip != nil, appState.currentTrip?.plannedWaypoints.isEmpty == true {
+                    showRouteEditor = true
+                }
+            }) {
                 TripEntryView(onCompleted: { showTripEntry = false })
             }
             .sheet(isPresented: $showRouteEditor) {
