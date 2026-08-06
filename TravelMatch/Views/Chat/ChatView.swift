@@ -35,6 +35,11 @@ struct ChatView: View {
         }
         .onAppear {
             appState.startListeningMessages(for: match)
+            appState.sohbetAcik = true
+        }
+        .onDisappear {
+            appState.sohbetAcik = false
+            ChatService.shared.stopListening()
         }
         .sheet(isPresented: $showProfileSheet) {
             TravelerProfileSheet(match: match) {
