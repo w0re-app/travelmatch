@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @EnvironmentObject var appState: AppState
+
     enum Tab: CaseIterable, Hashable {
         case home, discover, matches, profile
 
@@ -39,8 +41,12 @@ struct MainTabView: View {
                 }
             }
 
-            floatingTabBar
+            if !appState.sohbetAcik {
+                floatingTabBar
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
+        .animation(.easeInOut(duration: 0.2), value: appState.sohbetAcik)
     }
 
     private var floatingTabBar: some View {
