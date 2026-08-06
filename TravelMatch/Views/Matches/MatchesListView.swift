@@ -124,10 +124,7 @@ private struct PendingMatchRow: View {
     }
 
     private var avatar: some View {
-        ZStack {
-            Circle().fill(Theme.accentGradient).frame(width: 44, height: 44)
-            Image(systemName: "person.fill").foregroundStyle(.white)
-        }
+        AvatarView(uid: match.otherUser.id, boyut: 44)
     }
 }
 
@@ -136,10 +133,7 @@ private struct MatchRowView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            ZStack {
-                Circle().fill(Theme.accentGradient).frame(width: 44, height: 44)
-                Image(systemName: "person.fill").foregroundStyle(.white)
-            }
+            AvatarView(uid: match.otherUser.id, boyut: 44)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(match.otherUser.fullName).font(.subheadline.bold()).foregroundStyle(Theme.textPrimary)
