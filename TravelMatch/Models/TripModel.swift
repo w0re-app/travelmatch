@@ -44,18 +44,30 @@ struct Trip: Identifiable, Hashable {
 
 enum WaypointCategory: String, Codable, CaseIterable {
     case beach = "Plaj"
+    case cove = "Koy"
+    case island = "Ada"
     case village = "Köy"
     case town = "Kasaba"
     case historic = "Tarihi Yer"
+    case nature = "Doğa"
+    case lake = "Göl"
+    case ski = "Kayak Merkezi"
+    case thermal = "Termal"
     case viewpoint = "Manzara Noktası"
     case nightlife = "Gece Hayatı"
 
     var systemImage: String {
         switch self {
         case .beach: return "beach.umbrella.fill"
+        case .cove: return "water.waves"
+        case .island: return "mappin.and.ellipse"
         case .village: return "house.fill"
         case .town: return "building.2.fill"
         case .historic: return "building.columns.fill"
+        case .nature: return "leaf.fill"
+        case .lake: return "drop.fill"
+        case .ski: return "snowflake"
+        case .thermal: return "thermometer.sun.fill"
         case .viewpoint: return "mountain.2.fill"
         case .nightlife: return "sparkles"
         }
