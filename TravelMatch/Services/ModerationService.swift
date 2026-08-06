@@ -1,11 +1,9 @@
 import Foundation
 import FirebaseFirestore
 
-/// ⚠️ GEÇİCİ MİMARİ NOTU — bkz. TripService.swift başındaki açıklama.
-/// Normalde `reportUser` / `blockUser` / `unblockUser` Cloud Functions'ları
-/// üzerinden yapılan işlemler burada doğrudan Firestore batch/transaction ile
-/// yapılıyor. `users/{uid}.blockedUids` alanını client artık doğrudan
-/// değiştirebiliyor (firestore.rules bu geçiş süresince gevşetildi — bkz. dosya).
+/// Bildirme ve engelleme. Cloud Functions kullanılmadığı için işlemler client
+/// tarafında yapılıyor. Engelleme listesi `userSecrets/{uid}` içinde tutulur —
+/// `users` dokümanı herkese açık okunduğu için orada duramaz.
 final class ModerationService {
 
     static let shared = ModerationService()
@@ -40,8 +38,9 @@ final class ModerationService {
         let blockRef = db.collection("blocks").document("\(blockerUid)_\(blockedUid)")
         batch.setData(["blockerUid": blockerUid, "blockedUid": blockedUid, "createdAt": FieldValue.serverTimestamp()], forDocument: blockRef)
 
-        let userRef = db.collection("users").document(blockerUid)
-        batch.updateData(["blockedUids": FieldValue.arrayUnion([blockedUid])], forDocument: userRef)
+        let secretRef = db.collection("userSecrets").document(blockerUid)
+        batch.setData(["blockedUids": FieldValue.arrayUnion([blockedUid])],
+                      forDocument: secretRef, merge: true)
 
         try await batch.commit()
 
@@ -61,9 +60,9 @@ final class ModerationService {
         guard !blockerUid.isEmpty else { return }
 
         try await db.collection("blocks").document("\(blockerUid)_\(blockedUid)").delete()
-        try await db.collection("users").document(blockerUid).updateData([
+        try await db.collection("userSecrets").document(blockerUid).setData([
             "blockedUids": FieldValue.arrayRemove([blockedUid])
-        ])
+        ], merge: true)
     }
 
     private func Auth_currentUid() -> String {
