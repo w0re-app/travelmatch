@@ -15,16 +15,9 @@ struct TravelerProfileSheet: View {
 
                 ScrollView {
                     VStack(spacing: 20) {
-                        ZStack {
-                            Circle()
-                                .fill(Theme.primaryGradient)
-                                .frame(width: 96, height: 96)
-                                .neonGlow(Theme.magenta, radius: 18)
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 40))
-                                .foregroundStyle(.white)
-                        }
-                        .padding(.top, 8)
+                        AvatarView(uid: match.otherUser.id, boyut: 96)
+                            .neonGlow(Theme.magenta, radius: 18)
+                            .padding(.top, 8)
 
                         VStack(spacing: 4) {
                             HStack(spacing: 6) {
