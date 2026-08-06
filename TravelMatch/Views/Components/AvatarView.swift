@@ -8,7 +8,9 @@ import SwiftUI
 struct AvatarView: View {
     let uid: String
     var boyut: CGFloat = 64
-    var surum: UUID = UUID()
+    /// Yalnızca kendi fotoğrafını yeniledikten sonra tazelemek için verilir.
+    /// Boş bırakılırsa görsel bir kez yüklenir ve önbellekte kalır.
+    var surum: UUID? = nil
 
     @State private var url: URL?
     @State private var yukleniyor = true
@@ -32,7 +34,7 @@ struct AvatarView: View {
         }
         .frame(width: boyut, height: boyut)
         .clipShape(Circle())
-        .task(id: "\(uid)-\(surum)") {
+        .task(id: "\(uid)-\(surum?.uuidString ?? "sabit")") {
             await adresiGetir()
         }
     }
