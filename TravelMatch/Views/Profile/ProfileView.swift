@@ -4,7 +4,8 @@ struct ProfileView: View {
     @EnvironmentObject var appState: AppState
     @ObservedObject private var notificationService = NotificationService.shared
     @State private var showingEdit = false
-    @State private var showingLegal: LegalView.Belge?
+    @State private var showSartlar = false
+    @State private var showGizlilik = false
     @State private var showingDelete = false
 
     var body: some View {
@@ -108,7 +109,7 @@ struct ProfileView: View {
 
                     Section {
                         Button {
-                            showingLegal = .sartlar
+                            showSartlar = true
                         } label: {
                             Label("Kullanım Şartları", systemImage: "doc.text")
                                 .foregroundStyle(Theme.textPrimary)
@@ -116,7 +117,7 @@ struct ProfileView: View {
                         .listRowBackground(Color.clear)
 
                         Button {
-                            showingLegal = .gizlilik
+                            showGizlilik = true
                         } label: {
                             Label("Gizlilik Politikası", systemImage: "lock.shield")
                                 .foregroundStyle(Theme.textPrimary)
@@ -158,8 +159,11 @@ struct ProfileView: View {
             .sheet(isPresented: $showingEdit) {
                 ProfileEditView(user: appState.currentUser)
             }
-            .sheet(item: $showingLegal) { belge in
-                LegalView(belge: belge)
+            .sheet(isPresented: $showSartlar) {
+                LegalView(belge: .sartlar)
+            }
+            .sheet(isPresented: $showGizlilik) {
+                LegalView(belge: .gizlilik)
             }
             .sheet(isPresented: $showingDelete) {
                 DeleteAccountView().environmentObject(appState)
