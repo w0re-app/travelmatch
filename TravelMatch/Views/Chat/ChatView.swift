@@ -161,7 +161,7 @@ struct ChatView: View {
     private var expiryBanner: some View {
         HStack {
             Image(systemName: "clock.arrow.circlepath")
-            Text("Bu sohbet, seyahat bittikten 24 saat sonra otomatik olarak arşivlenecek.")
+            Text("Sohbetleriniz eşleşme silinene kadar saklanır. Eşleşmeyi kaldırdığında mesajlar da silinir.")
                 .font(.caption2)
         }
         .foregroundStyle(Theme.textTertiary)
