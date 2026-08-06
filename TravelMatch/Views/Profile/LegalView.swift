@@ -8,10 +8,8 @@ import SwiftUI
 /// girilmesi gerekiyor. Aynı metni bir web sayfasında yayınla (GitHub Pages
 /// yeterli) ve o adresi oraya gir.
 struct LegalView: View {
-    enum Belge: String, Identifiable {
+    enum Belge {
         case sartlar, gizlilik
-
-        var id: String { rawValue }
 
         var baslik: String {
             switch self {
