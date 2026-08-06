@@ -3,6 +3,8 @@ import PhotosUI
 
 struct TripEntryView: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.dismiss) private var dismiss
+    var onCompleted: () -> Void = {}
 
     @State private var selectedType: TripType = .flight
     @State private var entryMode: EntryMode = .manual
@@ -10,7 +12,7 @@ struct TripEntryView: View {
     @State private var referenceCode: String = ""
     @State private var locationIdentifier: String = ""
     @State private var startDate: Date = Date()
-    @State private var endDate: Date = Date().addingTimeInterval(60 * 60 * 6)
+    @State private var endDate: Date = Date().addingTimeInterval(60 * 60 * 3)
 
     @State private var photoPickerItem: PhotosPickerItem?
     @State private var showCamera = false
@@ -77,6 +79,11 @@ struct TripEntryView: View {
                             DatePicker("Kalkış zamanı", selection: $startDate)
                                 .foregroundStyle(Theme.textPrimary)
                                 .listRowBackground(Theme.glassFill)
+                            // Sabit 3 saat varsayımı uzun uçuşlarda eşleşme
+                            // penceresini yanlış hesaplıyordu.
+                            DatePicker("Varış zamanı", selection: $endDate)
+                                .foregroundStyle(Theme.textPrimary)
+                                .listRowBackground(Theme.glassFill)
                         } else {
                             DatePicker("Giriş tarihi", selection: $startDate, displayedComponents: .date)
                                 .foregroundStyle(Theme.textPrimary)
@@ -90,7 +97,7 @@ struct TripEntryView: View {
                     }
 
                     Section {
-                        Text("Bilgilerin yalnızca aynı seyahati paylaştığın kişilerle eşleşmeni sağlamak için kullanılır ve seyahat bitiminde otomatik olarak silinir. Fotoğrafla doğrulamada görsel hiçbir yere yüklenmez — tarama cihazında yapılır, sunucuya yalnızca geri döndürülemez bir doğrulama kodu gönderilir.")
+                        Text("Bilgilerin yalnızca aynı seyahati paylaştığın kişilerle eşleşmeni sağlamak için kullanılır. Rezervasyon kodun diğer kullanıcılara gösterilmez. Seyahatlerini Ana Sayfa'dan istediğin zaman silebilirsin. Fotoğrafla doğrulamada görsel hiçbir yere yüklenmez — tarama cihazında yapılır, sunucuya yalnızca geri döndürülemez bir doğrulama kodu gönderilir.")
                             .font(.footnote)
                             .foregroundStyle(Theme.textTertiary)
                             .listRowBackground(Color.clear)
@@ -114,13 +121,38 @@ struct TripEntryView: View {
                 }
             }
             .safeAreaInset(edge: .bottom) {
-                Button {
-                    submit()
-                } label: {
-                    Text("Doğrula ve Devam Et")
+                VStack(spacing: 8) {
+                    if case .failed(let mesaj) = appState.verificationState {
+                        Text(mesaj)
+                            .font(.caption)
+                            .foregroundStyle(Theme.rose)
+                            .multilineTextAlignment(.center)
+                    }
+                    Button {
+                        submit()
+                    } label: {
+                        if case .verifying = appState.verificationState {
+                            ProgressView().tint(.white)
+                        } else {
+                            Text("Kaydet ve Devam Et")
+                        }
+                    }
+                    .buttonStyle(.neon)
+                    .disabled(!formGecerli || isVerifying)
+                    .opacity(formGecerli && !isVerifying ? 1 : 0.5)
                 }
-                .buttonStyle(.neon)
                 .padding()
+            }
+            .onChange(of: appState.verificationState) { _, yeni in
+                if case .verified = yeni {
+                    onCompleted()
+                    dismiss()
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Vazgeç") { dismiss() }
+                }
             }
         }
     }
@@ -209,16 +241,26 @@ struct TripEntryView: View {
         }
     }
 
+    private var formGecerli: Bool {
+        !locationIdentifier.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && endDate > startDate
+    }
+
+    private var isVerifying: Bool {
+        if case .verifying = appState.verificationState { return true }
+        return false
+    }
+
+    /// Boş alan eskiden sahte bir uçuş koduyla ("TK2144") dolduruluyordu; bu,
+    /// kullanıcıyı hiç gitmediği bir uçuştaki yabancılarla eşleştiriyordu.
     private func submit() {
-        let end = selectedType == .flight ? startDate.addingTimeInterval(60 * 60 * 3) : endDate
+        guard formGecerli else { return }
         appState.submitTrip(
             type: selectedType,
             referenceCode: referenceCode,
-            locationIdentifier: locationIdentifier.isEmpty
-                ? (selectedType == .flight ? "TK2144" : "Hilton Bosphorus Istanbul")
-                : locationIdentifier,
+            locationIdentifier: locationIdentifier.trimmingCharacters(in: .whitespacesAndNewlines),
             startDate: startDate,
-            endDate: end,
+            endDate: endDate,
             verificationMethod: verificationMethod,
             documentHash: documentHash
         )
