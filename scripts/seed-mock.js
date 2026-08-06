@@ -56,7 +56,6 @@ function tripDoc({ uid, type, locationIdentifier, startDate, endDate }) {
   return {
     ownerUid: uid,
     type,
-    referenceCode: "",
     locationIdentifier,
     startDate: ts(startDate),
     endDate: ts(endDate),
@@ -91,8 +90,7 @@ async function kullanicilariYaz() {
       bio: k.bio,
       intentTags: k.intentTags,
       isIncognito: false,
-      fcmToken: null,
-      blockedUids: [],
+      isVerified: false,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       isMock: true,
     });
