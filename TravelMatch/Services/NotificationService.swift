@@ -53,9 +53,12 @@ final class NotificationService: NSObject, ObservableObject {
     }
 
     /// APNs token Firebase'e ulaştığında (AppDelegate üzerinden) çağrılır.
+    /// Token `userSecrets` içinde tutulur — `users` dokümanı herkese açık
+    /// okunduğu için push token'ı orada duramaz.
     func saveTokenIfNeeded(_ token: String?) {
         guard let token, let uid = Auth.auth().currentUser?.uid else { return }
-        Firestore.firestore().collection("users").document(uid).updateData(["fcmToken": token])
+        Firestore.firestore().collection("userSecrets").document(uid)
+            .setData(["fcmToken": token], merge: true)
     }
 }
 
