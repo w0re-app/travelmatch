@@ -8,14 +8,7 @@ struct TravelerCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top, spacing: 12) {
-                ZStack {
-                    Circle()
-                        .fill(Theme.accentGradient)
-                        .frame(width: 56, height: 56)
-                    Image(systemName: "person.fill")
-                        .foregroundStyle(.white)
-                        .font(.system(size: 22))
-                }
+                AvatarView(uid: traveler.user.id, boyut: 56)
 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
