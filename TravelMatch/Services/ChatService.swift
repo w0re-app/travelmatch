@@ -12,6 +12,11 @@ final class ChatService {
     private let db = Firestore.firestore()
     private var listener: ListenerRegistration?
 
+    enum ChatError: LocalizedError {
+        case bosMesaj
+        var errorDescription: String? { "Mesaj boş olamaz." }
+    }
+
     /// Sohbet ekranı açıldığında bir kez çağrılmalı.
     /// Supabase'deki üyelik kaydı olmadan o sohbetin fotoğraflarına
     /// ne yazılabilir ne de okunabilir (RLS politikaları buna bakıyor).
@@ -25,20 +30,29 @@ final class ChatService {
         }
     }
 
+    private func mesajlar(_ matchId: String) -> CollectionReference {
+        db.collection("matches").document(matchId).collection("messages")
+    }
+
     /// Client doğrudan yazar; Firestore kuralları yalnızca `status == accepted`
     /// olan eşleşmelerde mesaj eklenmesine izin verir (bkz. firestore.rules).
+    ///
+    /// ÖNEMLİ: `sentAt` mutlaka sunucu zaman damgasıyla yazılır. Codable ile
+    /// `nil` gönderildiğinde alan belgeye hiç yazılmıyordu; dinleyici
+    /// `.order(by: "sentAt")` kullandığı için Firestore o belgeleri sonuçtan
+    /// dışlıyor ve mesaj hiç görünmüyordu.
+    ///
+    /// Yazma `await` ile bekleniyor — aksi halde izin hatası sessizce kaybolur.
     func sendMessage(matchId: String, senderUid: String, content: String) async throws {
-        let isEmojiOnly = Self.isEmojiOnly(content)
-        let dto = MessageDTO(
-            senderUid: senderUid,
-            type: isEmojiOnly ? "emoji" : "text",
-            content: content,
-            imagePath: nil, imageWidth: nil, imageHeight: nil,
-            sentAt: nil
-        )
-        _ = try db.collection("matches").document(matchId)
-            .collection("messages")
-            .addDocument(from: dto)
+        let metin = content.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !metin.isEmpty else { throw ChatError.bosMesaj }
+
+        try await mesajlar(matchId).document().setData([
+            "senderUid": senderUid,
+            "type": Self.isEmojiOnly(metin) ? "emoji" : "text",
+            "content": metin,
+            "sentAt": FieldValue.serverTimestamp(),
+        ])
     }
 
     /// Fotoğrafı Supabase Storage'a yükler, sonra mesaj dokümanını oluşturur.
@@ -48,22 +62,18 @@ final class ChatService {
         // Sıkıştırma SupabaseDepo içinde yapılıyor (uzun kenar 1600 px, JPEG).
         let yol = try await SupabaseDepo.ortak.sohbetFotografiYukle(image, sohbetId: matchId)
 
-        let dto = MessageDTO(
-            senderUid: senderUid,
-            type: "image",
-            content: "",
-            imagePath: yol,
-            imageWidth: image.size.width,
-            imageHeight: image.size.height,
-            sentAt: nil
-        )
-        _ = try db.collection("matches").document(matchId)
-            .collection("messages")
-            .addDocument(from: dto)
+        try await mesajlar(matchId).document().setData([
+            "senderUid": senderUid,
+            "type": "image",
+            "content": "",
+            "imagePath": yol,
+            "imageWidth": Double(image.size.width),
+            "imageHeight": Double(image.size.height),
+            "sentAt": FieldValue.serverTimestamp(),
+        ])
     }
 
     /// Mesajdaki yol için geçici (1 saat) indirme adresi üretir.
-    /// Görsel gösterilirken çağrılır; süresi dolarsa yeniden çağrılmalı.
     func fotografUrl(for message: MessageDTO) async throws -> URL? {
         guard let yol = message.imagePath else { return nil }
         return try await SupabaseDepo.ortak.sohbetFotografiUrl(yol: yol)
@@ -71,10 +81,13 @@ final class ChatService {
 
     func listenMessages(matchId: String, onUpdate: @escaping ([MessageDTO]) -> Void) {
         listener?.remove()
-        listener = db.collection("matches").document(matchId)
-            .collection("messages")
+        listener = mesajlar(matchId)
             .order(by: "sentAt")
-            .addSnapshotListener { snapshot, _ in
+            .addSnapshotListener { snapshot, error in
+                if let error {
+                    print("Mesaj dinleyicisi başarısız: \(error.localizedDescription)")
+                    return
+                }
                 let messages = snapshot?.documents.compactMap { try? $0.data(as: MessageDTO.self) } ?? []
                 onUpdate(messages)
             }
