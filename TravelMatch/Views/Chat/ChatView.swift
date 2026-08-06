@@ -94,10 +94,7 @@ struct ChatView: View {
             showProfileSheet = true
         } label: {
             HStack(spacing: 8) {
-                ZStack {
-                    Circle().fill(Theme.accentGradient).frame(width: 32, height: 32)
-                    Image(systemName: "person.fill").font(.system(size: 13)).foregroundStyle(.white)
-                }
+                AvatarView(uid: match.otherUser.id, boyut: 32)
                 VStack(alignment: .leading, spacing: 0) {
                     Text(match.otherUser.fullName)
                         .font(.subheadline.bold())
