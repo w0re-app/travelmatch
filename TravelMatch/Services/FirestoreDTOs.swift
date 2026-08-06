@@ -1,8 +1,12 @@
 import FirebaseFirestore
 
 // Firestore koleksiyonlarıyla birebir eşleşen Codable modeller.
-// Not: @DocumentID kullanımı için FirebaseFirestoreSwift (veya SDK 10+'da
-// FirebaseFirestore'un kendisi) proje hedefine eklenmiş olmalı.
+//
+// GÜVENLİK NOTU: users/{uid} ve trips/{tripId} dokümanları giriş yapan HERKESE
+// açık okunuyor (eşleşme kartında ad/yaş/bio, eşleşme sorgusunda uçuş kodu
+// gerekiyor). Firestore alan bazlı izin veremediği için hassas alanlar bu
+// dokümanlarda TUTULMAZ; yalnızca sahibinin erişebildiği ayrı koleksiyonlarda
+// durur: userSecrets/{uid} ve tripSecrets/{tripId}.
 
 struct UserDTO: Codable {
     @DocumentID var id: String?
@@ -11,25 +15,35 @@ struct UserDTO: Codable {
     var bio: String
     var intentTags: [String]
     var isIncognito: Bool
+    var isVerified: Bool = false   // yalnızca belgeyle doğrulanmış seyahati olanda true
+    var createdAt: Timestamp?
+}
+
+/// Yalnızca kullanıcının kendisinin okuyabildiği alanlar.
+struct UserSecretDTO: Codable {
     var fcmToken: String?
     var blockedUids: [String] = []
-    var createdAt: Timestamp?
 }
 
 struct TripDTO: Codable {
     @DocumentID var id: String?
     var ownerUid: String
     var type: String              // "flight" | "hotel"
-    var referenceCode: String     // PNR / rezervasyon no (yalnızca sahibi görür - client filtreler)
     var locationIdentifier: String
     var startDate: Timestamp
     var endDate: Timestamp
     var isVerified: Bool
-    var selfReported: Bool        // otel için her zaman true, uçuş için API doğrulaması varsa false
+    var selfReported: Bool
     var verificationMethod: String  // "manual" | "document"
-    var documentHash: String?       // fotoğrafla doğrulamada tekillik kontrolü için (bkz. documentClaims)
+    var documentHash: String?
     var plannedWaypoints: [RouteWaypoint] = []
     var createdAt: Timestamp?
+}
+
+/// PNR / rezervasyon kodu — herkese açık trip dokümanında DURMAZ.
+struct TripSecretDTO: Codable {
+    var ownerUid: String
+    var referenceCode: String
 }
 
 struct MatchDTO: Codable {
@@ -37,7 +51,7 @@ struct MatchDTO: Codable {
     var tripId: String
     var participants: [String]
     var initiatedBy: String
-    var status: String            // "pending" | "accepted" | "rejected"
+    var status: String            // "pending" | "accepted" | "rejected" | "blocked"
     var createdAt: Timestamp?
     var expiresAt: Timestamp?
 }
@@ -46,9 +60,8 @@ struct MessageDTO: Codable {
     @DocumentID var id: String?
     var senderUid: String
     var type: String        // "text" | "image" | "emoji"
-    var content: String     // metin içeriği ya da emoji karakteri (görsel mesajlarda boş olabilir)
+    var content: String
     var imagePath: String?  // Supabase Storage yolu: {matchId}/{uid}-{uuid}.jpg
-                            // (kalıcı URL değil — indirme adresi imzalı olarak üretilir)
     var imageWidth: Double?
     var imageHeight: Double?
     var sentAt: Timestamp?
