@@ -31,6 +31,9 @@ final class AppState: ObservableObject {
     @Published var matches: [MatchRecord] = []
     @Published var matchErrorMessage: String?
     @Published var messagesByMatch: [String: [ChatMessage]] = [:]
+    /// Sohbet ekranı açıkken yüzen tab bar gizlenir — aksi halde mesaj yazma
+    /// çubuğunun üstüne biniyor ve alana dokunulamıyor.
+    @Published var sohbetAcik = false
 
     // Moderasyon / hesap
     @Published var moderationErrorMessage: String?
@@ -81,6 +84,7 @@ final class AppState: ObservableObject {
         fellowTravelers = []
         matches = []
         messagesByMatch = [:]
+        sohbetAcik = false
         matchErrorMessage = nil
         moderationErrorMessage = nil
         avatarHatasi = nil
