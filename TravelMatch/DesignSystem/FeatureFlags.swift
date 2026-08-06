@@ -1,9 +1,8 @@
 import Foundation
 
-/// Blaze faturalandırma planı aktif olana kadar bazı özellikler devre dışı.
-/// Blaze aktif olduğunda burada `true` yap, ilgili UI otomatik geri açılır.
+/// Kademeli açılan özellikler.
 enum FeatureFlags {
-    /// Sohbette fotoğraf gönderme — Firebase Storage bucket'ı henüz oluşturulamadı
-    /// (Blaze plan gerekiyor). Storage hazır olunca `true` yap.
-    static let photoMessagingEnabled = false
+    /// Sohbette fotoğraf gönderme. Depolama Firebase Storage'dan Supabase'e
+    /// taşındı ve çalışıyor (bkz. SupabaseDepo), bu yüzden açık.
+    static let photoMessagingEnabled = true
 }
