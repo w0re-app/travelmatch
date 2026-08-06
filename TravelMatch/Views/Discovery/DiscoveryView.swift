@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DiscoveryView: View {
     @EnvironmentObject var appState: AppState
+    var onSeyahatEkle: () -> Void = {}
     @State private var selectedIntent: IntentTag? = nil
     @State private var showRouteEditor = false
 
@@ -35,6 +36,9 @@ struct DiscoveryView: View {
                 NightclubBackground()
 
                 VStack(spacing: 0) {
+                    if appState.currentTrip == nil {
+                        seyahatYokDurumu
+                    } else {
                     if let trip = appState.currentTrip {
                         tripHeader(trip)
                     }
@@ -67,6 +71,7 @@ struct DiscoveryView: View {
                             .padding(.bottom, 90) // yüzen tab bar payı
                         }
                     }
+                    }
                 }
             }
             .navigationTitle("Bu Seyahatte")
@@ -91,6 +96,15 @@ struct DiscoveryView: View {
             }
             .sheet(isPresented: $showRouteEditor) {
                 RouteBuilderView(onFinished: { showRouteEditor = false }, showsSkip: false)
+            }
+            // Eşleşme hataları eskiden sessizce yutuluyordu; artık görünür.
+            .alert("Eşleşme Hatası", isPresented: Binding(
+                get: { appState.matchErrorMessage != nil },
+                set: { if !$0 { appState.matchErrorMessage = nil } }
+            )) {
+                Button("Tamam", role: .cancel) { appState.matchErrorMessage = nil }
+            } message: {
+                Text(appState.matchErrorMessage ?? "")
             }
         }
     }
@@ -185,6 +199,27 @@ struct DiscoveryView: View {
                 .overlay(Capsule().strokeBorder(isSelected ? Color.clear : Theme.glassStroke, lineWidth: 1))
                 .clipShape(Capsule())
         }
+    }
+
+    private var seyahatYokDurumu: some View {
+        VStack(spacing: 14) {
+            Spacer()
+            Image(systemName: "airplane.circle")
+                .font(.system(size: 44))
+                .foregroundStyle(Theme.textTertiary)
+            Text("Önce bir seyahat ekle")
+                .font(.headline)
+                .foregroundStyle(Theme.textPrimary)
+            Text("Uçuşunu ya da otelini ekledikten sonra aynı yolda olan kişiler burada listelenir.")
+                .font(.subheadline)
+                .foregroundStyle(Theme.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+            Button("Ana Sayfaya Dön") { onSeyahatEkle() }
+                .buttonStyle(.ghost)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
     }
 
     private var emptyState: some View {
