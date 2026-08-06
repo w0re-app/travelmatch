@@ -8,8 +8,19 @@ struct AppUser: Identifiable, Hashable {
     var avatarSystemImage: String   // prototipte gerçek fotoğraf yerine SF Symbol kullanıyoruz
     var intentTags: [IntentTag]
     var isIncognito: Bool = false
-    var isVerified: Bool = true
+    /// Yalnızca biniş kartı/rezervasyon belgesiyle doğrulanmış bir seyahati
+    /// olan kullanıcılarda true. Varsayılanı true bırakmak herkese sahte bir
+    /// "doğrulanmış" rozeti gösteriyordu.
+    var isVerified: Bool = false
     var blockedUids: [String] = []  // bu kullanıcının engellediği kişiler (yalnızca kendi profilinde dolu gelir)
+
+    /// Giriş yapılmamış / oturum kapatılmış durum. Eskiden `mockCurrentUser`
+    /// kullanılıyordu; o her seferinde rastgele bir UUID üretiyordu ve gerçek
+    /// Firebase UID'siyle karışabiliyordu.
+    static let bosKullanici = AppUser(
+        id: "", fullName: "", age: 18, bio: "",
+        avatarSystemImage: "person.crop.circle.fill", intentTags: []
+    )
 
     static let mockCurrentUser = AppUser(
         id: UUID().uuidString,
