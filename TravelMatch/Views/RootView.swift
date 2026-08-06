@@ -5,32 +5,17 @@ struct RootView: View {
 
     var body: some View {
         Group {
-            if !appState.isLoggedIn {
-                LoginView()
-            } else if appState.verificationState == .verified {
-                if appState.routeStepCompleted {
-                    MainTabView()
-                } else {
-                    RouteBuilderView {
-                        appState.routeStepCompleted = true
-                    }
-                }
-            } else if appState.verificationState == .verifying || isFailedState {
-                VerificationView()
+            if appState.isLoggedIn {
+                // Girişten sonra doğrudan ana sayfa açılır. Seyahat ekleme artık
+                // zorunlu bir ilk adım değil, ana sayfadan başlatılan bir akış.
+                MainTabView()
             } else {
-                TripEntryView()
+                LoginView()
             }
         }
         .animation(.default, value: appState.isLoggedIn)
-        .animation(.default, value: appState.verificationState)
-        .animation(.default, value: appState.routeStepCompleted)
         .preferredColorScheme(.dark)
         .tint(Theme.magenta)
-    }
-
-    private var isFailedState: Bool {
-        if case .failed = appState.verificationState { return true }
-        return false
     }
 }
 

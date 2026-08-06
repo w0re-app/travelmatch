@@ -2,33 +2,40 @@ import SwiftUI
 
 struct MainTabView: View {
     enum Tab: CaseIterable, Hashable {
-        case discover, matches, profile
+        case home, discover, matches, profile
 
         var title: String {
             switch self {
+            case .home:     return "Ana Sayfa"
             case .discover: return "Keşfet"
-            case .matches: return "Eşleşmeler"
-            case .profile: return "Profil"
+            case .matches:  return "Eşleşmeler"
+            case .profile:  return "Profil"
             }
         }
         var icon: String {
             switch self {
+            case .home:     return "house.fill"
             case .discover: return "person.2.fill"
-            case .matches: return "bubble.left.and.bubble.right.fill"
-            case .profile: return "person.crop.circle.fill"
+            case .matches:  return "bubble.left.and.bubble.right.fill"
+            case .profile:  return "person.crop.circle.fill"
             }
         }
     }
 
-    @State private var selectedTab: Tab = .discover
+    @State private var selectedTab: Tab = .home
 
     var body: some View {
         ZStack(alignment: .bottom) {
             Group {
                 switch selectedTab {
-                case .discover: DiscoveryView()
-                case .matches: MatchesListView()
-                case .profile: ProfileView()
+                case .home:
+                    HomeView(onSeyahateGit: { selectedTab = .discover })
+                case .discover:
+                    DiscoveryView(onSeyahatEkle: { selectedTab = .home })
+                case .matches:
+                    MatchesListView()
+                case .profile:
+                    ProfileView()
                 }
             }
 
@@ -44,7 +51,7 @@ struct MainTabView: View {
         }
         .padding(6)
         .glassCard(cornerRadius: 28)
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 16)
         .padding(.bottom, 8)
     }
 
@@ -57,9 +64,10 @@ struct MainTabView: View {
         } label: {
             VStack(spacing: 4) {
                 Image(systemName: tab.icon)
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.system(size: 17, weight: .semibold))
                 Text(tab.title)
-                    .font(.caption2.weight(.semibold))
+                    .font(.system(size: 10, weight: .semibold))
+                    .lineLimit(1)
             }
             .foregroundStyle(isSelected ? .white : Theme.textTertiary)
             .frame(maxWidth: .infinity)
@@ -77,8 +85,5 @@ struct MainTabView: View {
 }
 
 #Preview {
-    let state = AppState()
-    state.currentTrip = MockData.sampleFlightTrip
-    state.fellowTravelers = MockData.fellowTravelers(for: MockData.sampleFlightTrip)
-    return MainTabView().environmentObject(state).preferredColorScheme(.dark)
+    MainTabView().environmentObject(AppState()).preferredColorScheme(.dark)
 }
