@@ -23,9 +23,9 @@ workflows:
       - name: Firebase CLI'ı kur
         script: npm install -g firebase-tools
 
-      - name: Firestore kurallarını deploy et
+      - name: Firestore kurallarını ve dizinlerini deploy et
         script: |
-          firebase deploy --only firestore:rules --project "$FIREBASE_PROJECT_ID" --non-interactive
+          firebase deploy --only firestore:rules,firestore:indexes --project "$FIREBASE_PROJECT_ID" --non-interactive
 
     publishing:
       email:
@@ -192,6 +192,39 @@ workflows:
         script: |
           cd $CM_BUILD_DIR
           node scripts/seed-mock.js
+
+    publishing:
+      email:
+        recipients:
+          - umut.gurrkann@icloud.com
+        notify:
+          success: true
+          failure: true
+
+  clean-mock-data:
+    name: TravelMatch — Test Verisini Temizle
+    max_build_duration: 15
+    instance_type: linux
+    # Otomatik çalışmaz. App Store incelemesine göndermeden önce elle çalıştır.
+    environment:
+      groups:
+        - firebase_deploy_credentials
+      node: latest
+    scripts:
+      - name: Servis hesabı anahtarını çöz
+        script: |
+          echo $FIREBASE_SERVICE_ACCOUNT_BASE64 | base64 --decode > $CM_BUILD_DIR/service-account.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$CM_BUILD_DIR/service-account.json" >> $CM_ENV
+
+      - name: firebase-admin kur
+        script: |
+          cd $CM_BUILD_DIR
+          npm install firebase-admin@^12.1.0 --no-save
+
+      - name: Test verisini sil
+        script: |
+          cd $CM_BUILD_DIR
+          node scripts/temizle-mock.js
 
     publishing:
       email:
