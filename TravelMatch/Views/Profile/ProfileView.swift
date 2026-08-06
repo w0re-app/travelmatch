@@ -4,6 +4,8 @@ struct ProfileView: View {
     @EnvironmentObject var appState: AppState
     @ObservedObject private var notificationService = NotificationService.shared
     @State private var showingEdit = false
+    @State private var showingLegal: LegalView.Belge?
+    @State private var showingDelete = false
 
     var body: some View {
         NavigationStack {
@@ -96,16 +98,32 @@ struct ProfileView: View {
                             Label(trip.locationIdentifier, systemImage: trip.type.systemImage)
                                 .foregroundStyle(Theme.textPrimary)
                                 .listRowBackground(Color.clear)
-                            Button(role: .destructive) {
-                                appState.resetTrip()
-                            } label: {
-                                Text("Seyahati Sonlandır")
-                            }
-                            .foregroundStyle(Theme.rose)
-                            .listRowBackground(Color.clear)
                         } header: {
                             Text("Aktif Seyahat").foregroundStyle(Theme.textTertiary)
+                        } footer: {
+                            Text("Seyahatlerini Ana Sayfa'dan yönetebilir ve silebilirsin.")
+                                .foregroundStyle(Theme.textTertiary)
                         }
+                    }
+
+                    Section {
+                        Button {
+                            showingLegal = .sartlar
+                        } label: {
+                            Label("Kullanım Şartları", systemImage: "doc.text")
+                                .foregroundStyle(Theme.textPrimary)
+                        }
+                        .listRowBackground(Color.clear)
+
+                        Button {
+                            showingLegal = .gizlilik
+                        } label: {
+                            Label("Gizlilik Politikası", systemImage: "lock.shield")
+                                .foregroundStyle(Theme.textPrimary)
+                        }
+                        .listRowBackground(Color.clear)
+                    } header: {
+                        Text("Yasal").foregroundStyle(Theme.textTertiary)
                     }
 
                     Section {
@@ -116,6 +134,20 @@ struct ProfileView: View {
                         }
                         .foregroundStyle(Theme.rose)
                         .listRowBackground(Color.clear)
+
+                        // App Store Review Guideline 5.1.1(v): hesap oluşturmaya
+                        // izin veren uygulama, silmeyi de uygulama içinden
+                        // sunmak zorunda.
+                        Button(role: .destructive) {
+                            showingDelete = true
+                        } label: {
+                            Text("Hesabı Sil")
+                        }
+                        .foregroundStyle(Theme.rose)
+                        .listRowBackground(Color.clear)
+                    } footer: {
+                        Text("Hesabını silmek profilini, seyahatlerini, eşleşmelerini ve mesajlarını kalıcı olarak kaldırır.")
+                            .foregroundStyle(Theme.textTertiary)
                     }
                 }
                 .scrollContentBackground(.hidden)
@@ -125,6 +157,12 @@ struct ProfileView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
             .sheet(isPresented: $showingEdit) {
                 ProfileEditView(user: appState.currentUser)
+            }
+            .sheet(item: $showingLegal) { belge in
+                LegalView(belge: belge)
+            }
+            .sheet(isPresented: $showingDelete) {
+                DeleteAccountView().environmentObject(appState)
             }
             .task {
                 notificationService.refreshPermissionStatus()
