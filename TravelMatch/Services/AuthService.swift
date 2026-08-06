@@ -50,6 +50,48 @@ final class AuthService {
         try Auth.auth().signOut()
     }
 
+    // MARK: - Hesap silme (App Store Review Guideline 5.1.1(v))
+
+    /// Silme öncesi yeniden kimlik doğrulama isteği — `configure` ile aynı
+    /// nonce mekanizmasını kullanır.
+    func configureReauth(_ request: ASAuthorizationAppleIDRequest) {
+        configure(request)
+    }
+
+    /// Apple ile yeniden doğrular ve Apple'ın yetkilendirme kodunu döner.
+    /// Bu kod, token iptali için gerekli (Apple ile Giriş kullanan uygulamalarda
+    /// hesap silinirken token'ların iptal edilmesi zorunlu).
+    func reauthenticate(_ result: Result<ASAuthorization, Error>) async throws -> String? {
+        switch result {
+        case .failure(let error):
+            throw error
+        case .success(let authorization):
+            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+                  let tokenData = credential.identityToken,
+                  let idTokenString = String(data: tokenData, encoding: .utf8),
+                  let nonce = currentNonce else {
+                throw NSError(domain: "AuthService", code: -1,
+                              userInfo: [NSLocalizedDescriptionKey: "Apple kimlik bilgisi alınamadı."])
+            }
+
+            let firebaseCredential = OAuthProvider.appleCredential(
+                withIDToken: idTokenString, rawNonce: nonce, fullName: credential.fullName
+            )
+            try await Auth.auth().currentUser?.reauthenticate(with: firebaseCredential)
+
+            return credential.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }
+        }
+    }
+
+    /// Firebase hesabını siler. Yetkilendirme kodu verilirse önce Apple
+    /// token'ları iptal edilir.
+    func deleteAccount(authorizationCode: String?) async throws {
+        if let code = authorizationCode {
+            try? await Auth.auth().revokeToken(withAuthorizationCode: code)
+        }
+        try await Auth.auth().currentUser?.delete()
+    }
+
     // MARK: - Nonce yardımcıları (Apple'ın önerdiği replay-attack koruması)
 
     private func randomNonceString(length: Int = 32) -> String {
