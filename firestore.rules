@@ -60,7 +60,28 @@ service cloud.firestore {
         // Güzergah en fazla 10 durak.
         && request.resource.data.get('plannedWaypoints', []).size() <= 10;
 
-      allow delete: if false;
+      // Hesap silme akışı kendi seyahatlerini temizleyebilmeli (5.1.1(v)).
+      allow delete: if isSignedIn() && resource.data.ownerUid == request.auth.uid;
+    }
+
+    // trips/{tripId} giriş yapan herkese açık (eşleşme için gerekli). Bu yüzden
+    // PNR / rezervasyon kodu ORADA TUTULMAZ — yalnızca sahibinin okuyabildiği
+    // ayrı bir koleksiyonda durur. Firestore alan bazlı izin veremediği için
+    // hassas veriyi ayırmak tek yol.
+    match /tripSecrets/{tripId} {
+      allow read: if isSignedIn() && resource.data.ownerUid == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.ownerUid == request.auth.uid;
+      allow update: if isSignedIn()
+        && resource.data.ownerUid == request.auth.uid
+        && unchanged('ownerUid', '');
+      allow delete: if isSignedIn() && resource.data.ownerUid == request.auth.uid;
+    }
+
+    // users/{uid} de herkese açık okunuyor (ad, yaş, bio eşleşme kartında
+    // gösteriliyor). Push token'ı ve engelleme listesi bu yüzden orada değil,
+    // burada — yalnızca sahibi erişebilir.
+    match /userSecrets/{uid} {
+      allow read, write: if isSignedIn() && request.auth.uid == uid;
     }
 
     // documentClaims/{hash} — biniş kartı / rezervasyon belgesi tekilliği.
@@ -73,7 +94,8 @@ service cloud.firestore {
       // Kayıt yalnızca hash'i zaten elinde olan biri için anlamlı.
       allow read: if isSignedIn();
       allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
-      allow update, delete: if false;
+      allow update: if false;
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
     }
 
     // blocks/{blockerUid_blockedUid}
@@ -127,7 +149,8 @@ service cloud.firestore {
                 )
            );
 
-      allow delete: if false;
+      // Hesap silme akışı için: taraflardan biri eşleşmeyi silebilir.
+      allow delete: if isSignedIn() && request.auth.uid in resource.data.participants;
 
       match /messages/{messageId} {
         function match_() {
@@ -142,7 +165,9 @@ service cloud.firestore {
           && match_().status == "accepted"
           && request.resource.data.senderUid == request.auth.uid;
 
-        allow update, delete: if false;
+        allow update: if false;
+        // Hesap silinirken sohbet geçmişi de gitmeli.
+        allow delete: if isSignedIn() && request.auth.uid in match_().participants;
       }
     }
   }
