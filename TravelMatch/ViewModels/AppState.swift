@@ -10,14 +10,14 @@ final class AppState: ObservableObject {
 
     // Auth / Onboarding
     @Published var isLoggedIn: Bool = false
-    @Published var currentUser: AppUser = .mockCurrentUser
+    @Published var currentUser: AppUser = .bosKullanici
     @Published var authErrorMessage: String?
 
-    // Trip / Verification
+    // Trip
     @Published var currentTrip: Trip?
     @Published var currentTripDocId: String?
     @Published var verificationState: VerificationState = .idle
-    @Published var routeStepCompleted: Bool = false
+    @Published var seyahatlerim: [(docId: String, trip: Trip)] = []
 
     // Discovery
     @Published var fellowTravelers: [TripFellowTraveler] = []
@@ -32,11 +32,15 @@ final class AppState: ObservableObject {
     @Published var matchErrorMessage: String?
     @Published var messagesByMatch: [String: [ChatMessage]] = [:]
 
+    // Moderasyon / hesap
+    @Published var moderationErrorMessage: String?
+    @Published var hesapSiliniyor = false
+    @Published var hesapSilmeHatasi: String?
+
     private let db = Firestore.firestore()
     private var authHandle: AuthStateDidChangeListenerHandle?
 
     init() {
-        // Firebase oturum durumunu dinle (uygulama açılışında zaten girişliyse otomatik geç).
         authHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
             guard let self else { return }
             Task { @MainActor in
@@ -44,7 +48,9 @@ final class AppState: ObservableObject {
                 if let user {
                     await self.loadOrCreateUserProfile(uid: user.uid)
                     self.startListeningMatches(uid: user.uid)
-                    await self.restoreActiveTrip(uid: user.uid)
+                    await self.seyahatleriYenile(uid: user.uid)
+                } else {
+                    self.yereliTemizle()
                 }
             }
         }
@@ -52,24 +58,42 @@ final class AppState: ObservableObject {
 
     // MARK: - Auth
 
-    /// LoginView, Apple ile giriş tamamlandığında (AuthService.handle sonrası) çağırır.
-    /// Auth state listener zaten `isLoggedIn`'i güncelleyecek; bu yalnızca hata gösterimi içindir.
     func handleAuthError(_ error: Error) {
         authErrorMessage = error.localizedDescription
     }
 
     func signOut() {
         try? AuthService.shared.signOut()
+        yereliTemizle()
+    }
+
+    /// Oturum kapandığında bellekteki her şey gitmeli — aynı cihazda başka biri
+    /// giriş yaparsa öncekinin verisini görmemeli.
+    private func yereliTemizle() {
         MatchService.shared.stopListening()
         TripService.shared.stopListening()
+        ChatService.shared.stopListening()
+        currentUser = .bosKullanici
         currentTrip = nil
+        currentTripDocId = nil
         verificationState = .idle
+        seyahatlerim = []
         fellowTravelers = []
         matches = []
+        messagesByMatch = [:]
+        matchErrorMessage = nil
+        moderationErrorMessage = nil
+        avatarHatasi = nil
+        avatarSurumu = UUID()
     }
 
     private func loadOrCreateUserProfile(uid: String) async {
         let ref = db.collection("users").document(uid)
+        var engellenenler: [String] = []
+        if let gizli = try? await db.collection("userSecrets").document(uid).getDocument(as: UserSecretDTO.self) {
+            engellenenler = gizli.blockedUids
+        }
+
         if let existing = try? await ref.getDocument(as: UserDTO.self) {
             currentUser = AppUser(
                 id: uid,
@@ -79,17 +103,41 @@ final class AppState: ObservableObject {
                 avatarSystemImage: "person.crop.circle.fill",
                 intentTags: existing.intentTags.compactMap { IntentTag(rawValue: $0) },
                 isIncognito: existing.isIncognito,
-                blockedUids: existing.blockedUids
+                isVerified: existing.isVerified,
+                blockedUids: engellenenler
             )
         } else {
-            // İlk giriş: taslak profil oluştur, kullanıcı sonra ProfileView'dan düzenler.
-            let draft = UserDTO(fullName: "Yeni Kullanıcı", age: 18, bio: "", intentTags: [], isIncognito: false, fcmToken: nil, blockedUids: [], createdAt: nil)
+            let draft = UserDTO(fullName: "Yeni Kullanıcı", age: 18, bio: "",
+                                intentTags: [], isIncognito: false, isVerified: false, createdAt: nil)
             try? ref.setData(from: draft)
-            currentUser = AppUser(id: uid, fullName: draft.fullName, age: draft.age, bio: draft.bio, avatarSystemImage: "person.crop.circle.fill", intentTags: [])
+            currentUser = AppUser(id: uid, fullName: draft.fullName, age: draft.age, bio: draft.bio,
+                                  avatarSystemImage: "person.crop.circle.fill", intentTags: [])
         }
     }
 
-    // MARK: - Trip submission & real verification
+    // MARK: - Seyahatler
+
+    func seyahatleriYenile(uid: String? = nil) async {
+        let hedef = uid ?? currentUser.id
+        guard !hedef.isEmpty else { return }
+        seyahatlerim = await TripService.shared.seyahatlerim(uid: hedef)
+
+        if currentTrip == nil,
+           let aktif = seyahatlerim.first(where: { TripService.aktifMi($0.trip) }) {
+            currentTrip = aktif.trip
+            currentTripDocId = aktif.docId
+            verificationState = .verified
+            startListeningFellowTravelers(trip: aktif.trip)
+        }
+    }
+
+    var aktifSeyahatler: [(docId: String, trip: Trip)] {
+        seyahatlerim.filter { TripService.aktifMi($0.trip) }
+    }
+
+    var gecmisSeyahatler: [(docId: String, trip: Trip)] {
+        seyahatlerim.filter { !TripService.aktifMi($0.trip) }
+    }
 
     func submitTrip(
         type: TripType,
@@ -115,22 +163,19 @@ final class AppState: ObservableObject {
                 self.currentTripDocId = trip.id
                 self.verificationState = .verified
                 self.startListeningFellowTravelers(trip: trip)
+                await self.seyahatleriYenile()
+
+                // Belgeyle doğrulanmış bir seyahati olan kullanıcı "doğrulanmış"
+                // rozetini hak eder. Rozetin bir karşılığı olsun diye burada
+                // yazılıyor — varsayılan olarak herkes doğrulanmış sayılmıyor.
+                if trip.verificationMethod == .document, self.currentUser.isVerified == false {
+                    self.currentUser.isVerified = true
+                    try? await self.db.collection("users").document(uid).updateData(["isVerified": true])
+                }
             } catch {
                 self.verificationState = .failed(error.localizedDescription)
             }
         }
-    }
-
-    /// Uygulama yeniden açıldığında devam eden seyahati Firestore'dan geri yükler.
-    /// Bu olmadan kullanıcı her açılışta seyahatini yeniden eklemek zorunda kalıyor
-    /// ve her ekleme yeni bir trip dokümanı yaratıyordu.
-    private func restoreActiveTrip(uid: String) async {
-        guard currentTrip == nil else { return }
-        guard let (docId, trip) = await TripService.shared.aktifSeyahatiGetir(uid: uid) else { return }
-        currentTrip = trip
-        currentTripDocId = docId
-        verificationState = .verified
-        startListeningFellowTravelers(trip: trip)
     }
 
     func resetTrip() {
@@ -138,8 +183,27 @@ final class AppState: ObservableObject {
         currentTrip = nil
         currentTripDocId = nil
         verificationState = .idle
-        routeStepCompleted = false
         fellowTravelers = []
+    }
+
+    /// Seyahati Firestore'dan tamamen siler (PNR kaydı dahil).
+    func seyahatiSil(docId: String) {
+        Task {
+            do {
+                try await TripService.shared.seyahatSil(tripId: docId)
+                if currentTripDocId == docId { resetTrip() }
+                await seyahatleriYenile()
+            } catch {
+                moderationErrorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    func seyahatiSec(docId: String, trip: Trip) {
+        currentTrip = trip
+        currentTripDocId = docId
+        verificationState = .verified
+        startListeningFellowTravelers(trip: trip)
     }
 
     private func startListeningFellowTravelers(trip: Trip) {
@@ -159,7 +223,7 @@ final class AppState: ObservableObject {
         }
     }
 
-    // MARK: - Profile
+    // MARK: - Profil
 
     func updateProfile(fullName: String, age: Int, bio: String, intentTags: [IntentTag]) {
         currentUser.fullName = fullName
@@ -177,9 +241,6 @@ final class AppState: ObservableObject {
         ])
     }
 
-    // MARK: - Profil fotoğrafı
-
-    /// Seçilen görseli Supabase Storage'a yükler ve ekranlardaki avatarları tazeler.
     func uploadProfilePhoto(_ image: UIImage) {
         avatarYukleniyor = true
         avatarHatasi = nil
@@ -194,8 +255,6 @@ final class AppState: ObservableObject {
         }
     }
 
-    // MARK: - Incognito
-
     func toggleIncognito() {
         currentUser.isIncognito.toggle()
         let uid = currentUser.id
@@ -203,7 +262,7 @@ final class AppState: ObservableObject {
         db.collection("users").document(uid).updateData(["isIncognito": currentUser.isIncognito])
     }
 
-    // MARK: - Matching
+    // MARK: - Eşleşme
 
     func sendMatchRequest(to traveler: TripFellowTraveler) {
         guard let tripId = currentTripDocId else {
@@ -219,8 +278,6 @@ final class AppState: ObservableObject {
                     fromUid: self.currentUser.id, toUid: traveler.user.id, tripId: tripId
                 )
             } catch {
-                // Hata sessizce yutulursa istek gitmemiş gibi görünür ama
-                // kullanıcı bunu anlamaz — durumu geri al ve mesajı göster.
                 if let index = self.fellowTravelers.firstIndex(where: { $0.id == traveler.id }) {
                     self.fellowTravelers[index].matchStatus = .none
                 }
@@ -255,13 +312,16 @@ final class AppState: ObservableObject {
                     let otherUser = AppUser(
                         id: otherUid, fullName: userDto.fullName, age: userDto.age, bio: userDto.bio,
                         avatarSystemImage: "person.crop.circle.fill",
-                        intentTags: userDto.intentTags.compactMap { IntentTag(rawValue: $0) }
+                        intentTags: userDto.intentTags.compactMap { IntentTag(rawValue: $0) },
+                        isVerified: userDto.isVerified
                     )
                     let sharedTrip = Trip(
                         id: tripDto.id ?? "", type: tripDto.type == "flight" ? .flight : .hotel,
                         referenceCode: "", locationIdentifier: tripDto.locationIdentifier,
                         startDate: tripDto.startDate.dateValue(), endDate: tripDto.endDate.dateValue(),
-                        isVerified: tripDto.isVerified
+                        isVerified: tripDto.isVerified,
+                        verificationMethod: TripVerificationMethod(rawValue: tripDto.verificationMethod) ?? .manual,
+                        plannedWaypoints: tripDto.plannedWaypoints
                     )
                     let status: MatchStatus = {
                         switch dto.status {
@@ -274,7 +334,7 @@ final class AppState: ObservableObject {
                     records.append(MatchRecord(
                         id: matchId, otherUser: otherUser, sharedTrip: sharedTrip, status: status,
                         createdAt: dto.createdAt?.dateValue() ?? Date(),
-                        expiresAt: dto.expiresAt?.dateValue() ?? Date(),
+                        expiresAt: dto.expiresAt?.dateValue() ?? sharedTrip.endDate.addingTimeInterval(24 * 60 * 60),
                         lastMessagePreview: nil, lastMessageDate: nil
                     ))
                 }
@@ -283,11 +343,10 @@ final class AppState: ObservableObject {
         }
     }
 
-    // MARK: - Chat
+    // MARK: - Sohbet
 
     func startListeningMessages(for match: MatchRecord) {
-        // Supabase tarafındaki sohbet üyeliği — bu kayıt olmadan sohbet
-        // fotoğrafları ne yüklenebilir ne de görüntülenebilir (RLS).
+        // Supabase üyelik kaydı — bu olmadan sohbet fotoğrafları RLS'e takılır.
         Task { await ChatService.shared.sohbeteBaglan(matchId: match.id) }
 
         ChatService.shared.listenMessages(matchId: match.id) { [weak self] dtos in
@@ -325,20 +384,27 @@ final class AppState: ObservableObject {
         let uid = currentUser.id
         guard !trimmed.isEmpty else { return }
         Task {
-            try? await ChatService.shared.sendMessage(matchId: match.id, senderUid: uid, content: trimmed)
+            do {
+                try await ChatService.shared.sendMessage(matchId: match.id, senderUid: uid, content: trimmed)
+            } catch {
+                // Sessiz başarısızlık kullanıcıya mesaj gitmiş gibi görünüyordu.
+                self.matchErrorMessage = "Mesaj gönderilemedi: \(error.localizedDescription)"
+            }
         }
     }
 
     func sendImage(_ image: UIImage, in match: MatchRecord) {
         let uid = currentUser.id
         Task {
-            try? await ChatService.shared.sendImage(matchId: match.id, senderUid: uid, image: image)
+            do {
+                try await ChatService.shared.sendImage(matchId: match.id, senderUid: uid, image: image)
+            } catch {
+                self.matchErrorMessage = "Fotoğraf gönderilemedi: \(error.localizedDescription)"
+            }
         }
     }
 
-    // MARK: - Moderasyon (bildirme / engelleme)
-
-    @Published var moderationErrorMessage: String?
+    // MARK: - Moderasyon
 
     func reportUser(_ uid: String, matchId: String?, reason: ReportReason, details: String, alsoBlock: Bool) {
         Task {
@@ -368,7 +434,7 @@ final class AppState: ObservableObject {
         }
     }
 
-    // MARK: - Güzergah (uğranacak noktalar)
+    // MARK: - Güzergah
 
     func updateTripRoute(_ waypoints: [RouteWaypoint]) {
         guard let tripId = currentTripDocId else { return }
@@ -376,5 +442,47 @@ final class AppState: ObservableObject {
         Task {
             try? await TripService.shared.updateRoute(tripId: tripId, waypoints: waypoints)
         }
+    }
+
+    // MARK: - Hesap silme (App Store Review Guideline 5.1.1(v))
+
+    /// Kullanıcının tüm verisini siler, sonra Firebase hesabını kapatır.
+    /// `authorizationCode` Apple ile yeniden doğrulamadan gelir; token
+    /// iptali için gerekli.
+    func hesabiSil(authorizationCode: String?) async {
+        let uid = currentUser.id
+        guard !uid.isEmpty else { return }
+
+        hesapSiliniyor = true
+        hesapSilmeHatasi = nil
+
+        // 1) Eşleşmeler ve mesajlar
+        await MatchService.shared.tumEslesmeleriSil(uid: uid)
+
+        // 2) Seyahatler ve PNR kayıtları
+        await TripService.shared.tumSeyahatleriSil(uid: uid)
+
+        // 3) Engelleme kayıtları
+        if let bloklar = try? await db.collection("blocks")
+            .whereField("blockerUid", isEqualTo: uid).getDocuments() {
+            for doc in bloklar.documents { try? await doc.reference.delete() }
+        }
+
+        // 4) Profil fotoğrafı (Supabase)
+        try? await SupabaseDepo.ortak.profilFotografiSil()
+
+        // 5) Kullanıcı belgeleri
+        try? await db.collection("userSecrets").document(uid).delete()
+        try? await db.collection("users").document(uid).delete()
+
+        // 6) Firebase hesabı + Apple token iptali
+        do {
+            try await AuthService.shared.deleteAccount(authorizationCode: authorizationCode)
+            yereliTemizle()
+        } catch {
+            hesapSilmeHatasi = error.localizedDescription
+        }
+
+        hesapSiliniyor = false
     }
 }
