@@ -43,12 +43,19 @@ final class MatchService {
             throw MatchServiceError.alreadyRequested
         }
 
+        // expiresAt olmadan eşleşme "şu an sona ermiş" görünüyor ve temizlik
+        // devreye girdiğinde anında siliniyor. Seyahatin bitişi + 24 saat.
+        let tripDoc = try await db.collection("trips").document(tripId).getDocument()
+        let tripEnd = (tripDoc.data()?["endDate"] as? Timestamp)?.dateValue() ?? Date()
+        let expiresAt = tripEnd.addingTimeInterval(24 * 60 * 60)
+
         try await db.collection("matches").addDocument(data: [
             "tripId": tripId,
             "participants": [fromUid, toUid],
             "initiatedBy": fromUid,
             "status": "pending",
             "createdAt": FieldValue.serverTimestamp(),
+            "expiresAt": Timestamp(date: expiresAt),
         ])
     }
 
@@ -69,6 +76,21 @@ final class MatchService {
                 let matches = snapshot?.documents.compactMap { try? $0.data(as: MatchDTO.self) } ?? []
                 onUpdate(matches)
             }
+    }
+
+    /// Hesap silme akışı: kullanıcının dahil olduğu tüm eşleşmeleri ve
+    /// mesajlarını siler.
+    func tumEslesmeleriSil(uid: String) async {
+        guard let snapshot = try? await db.collection("matches")
+            .whereField("participants", arrayContains: uid)
+            .getDocuments() else { return }
+
+        for doc in snapshot.documents {
+            if let mesajlar = try? await doc.reference.collection("messages").getDocuments() {
+                for m in mesajlar.documents { try? await m.reference.delete() }
+            }
+            try? await doc.reference.delete()
+        }
     }
 
     func stopListening() {
