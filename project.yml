@@ -49,10 +49,6 @@ targets:
       - package: Firebase
         product: FirebaseFirestore
       - package: Firebase
-        product: FirebaseFunctions
-      - package: Firebase
-        product: FirebaseStorage
-      - package: Firebase
         product: FirebaseMessaging
       - package: Supabase
         product: Supabase
