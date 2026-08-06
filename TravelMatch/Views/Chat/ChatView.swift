@@ -71,6 +71,15 @@ struct ChatView: View {
             }
         }
         .photosPicker(isPresented: $showGalleryPicker, selection: $photoPickerItem, matching: .images)
+        // Mesaj/fotoğraf gönderiminde hata olursa sessiz kalmasın.
+        .alert("Gönderilemedi", isPresented: Binding(
+            get: { appState.matchErrorMessage != nil },
+            set: { if !$0 { appState.matchErrorMessage = nil } }
+        )) {
+            Button("Tamam", role: .cancel) { appState.matchErrorMessage = nil }
+        } message: {
+            Text(appState.matchErrorMessage ?? "")
+        }
         .confirmationDialog("Fotoğraf Ekle", isPresented: $showAttachmentOptions, titleVisibility: .visible) {
             Button("Kamera") { showCamera = true }
             Button("Galeri") { showGalleryPicker = true }
