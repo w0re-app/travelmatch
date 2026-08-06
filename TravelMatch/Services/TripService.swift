@@ -58,7 +58,7 @@ final class TripService {
         if let documentHash {
             let claimRef = db.collection("documentClaims").document(documentHash)
             do {
-                try await db.runTransaction { transaction, errorPointer in
+                _ = try await db.runTransaction { transaction, errorPointer in
                     let snapshot: DocumentSnapshot
                     do {
                         snapshot = try transaction.getDocument(claimRef)
@@ -130,7 +130,8 @@ final class TripService {
     private func yaziReferansKodu(tripId: String, uid: String, referenceCode: String) async throws {
         let kod = referenceCode.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !kod.isEmpty else { return }
-        try await db.collection("tripSecrets").document(tripId)
+        // setData(from:) senkron ve throwing — await gerekmiyor.
+        try db.collection("tripSecrets").document(tripId)
             .setData(from: TripSecretDTO(ownerUid: uid, referenceCode: kod))
     }
 
