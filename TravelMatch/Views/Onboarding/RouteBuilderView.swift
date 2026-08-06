@@ -7,12 +7,21 @@ struct RouteBuilderView: View {
 
     @State private var query: String = ""
     @State private var selected: [RouteWaypoint] = []
+    @State private var kategori: WaypointCategory? = nil
     @FocusState private var searchFocused: Bool
 
     private var suggestions: [RouteWaypoint] {
-        WaypointCatalog.search(query).filter { candidate in
-            !selected.contains(where: { $0.id == candidate.id })
+        let taban: [RouteWaypoint]
+        if let kategori, query.isEmpty {
+            // Kategori seçiliyken arama yapılmadıysa o kategorinin tamamı listelenir —
+            // "plajları göster", "tarihi yerleri göster" bu şekilde çalışıyor.
+            taban = WaypointCatalog.kategoride(kategori)
+        } else if let kategori {
+            taban = WaypointCatalog.search(query, limit: 60).filter { $0.category == kategori }
+        } else {
+            taban = WaypointCatalog.search(query)
         }
+        return taban.filter { aday in !selected.contains(where: { $0.id == aday.id }) }
     }
 
     var body: some View {
@@ -22,6 +31,7 @@ struct RouteBuilderView: View {
             VStack(spacing: 0) {
                 header
                 searchField
+                kategoriCubugu
 
                 if !selected.isEmpty {
                     selectedChips
@@ -42,7 +52,7 @@ struct RouteBuilderView: View {
             Text("Güzergahını Ekle")
                 .font(.title2.bold())
                 .foregroundStyle(Theme.textPrimary)
-            Text("Bu tatilde uğramayı düşündüğün plaj, köy, kasaba ya da noktaları seç. Aynı yere gidenleri profilinde göreceksin.")
+            Text("Bu tatilde uğramayı düşündüğün plaj, koy, ada, tarihi yer ya da doğa noktalarını seç. Aynı yerlere gidenler listende üst sıraya çıkar.")
                 .font(.subheadline)
                 .foregroundStyle(Theme.textSecondary)
         }
@@ -73,6 +83,39 @@ struct RouteBuilderView: View {
         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Theme.glassStroke, lineWidth: 1))
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .padding(.horizontal, 20)
+    }
+
+    /// Kategori filtresi — 580 kayıtlık katalogda aramadan gezinebilmek için.
+    private var kategoriCubugu: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                kategoriRozeti(baslik: "Tümü", ikon: "square.grid.2x2", secili: kategori == nil) {
+                    kategori = nil
+                }
+                ForEach(WaypointCategory.allCases, id: \.self) { kat in
+                    kategoriRozeti(baslik: kat.rawValue, ikon: kat.systemImage, secili: kategori == kat) {
+                        kategori = (kategori == kat) ? nil : kat
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+        }
+    }
+
+    private func kategoriRozeti(baslik: String, ikon: String, secili: Bool,
+                                action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Label(baslik, systemImage: ikon)
+                .font(.caption.weight(.medium))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .background(secili ? AnyShapeStyle(Theme.primaryGradient) : AnyShapeStyle(Theme.glassFill))
+                .foregroundStyle(.white)
+                .overlay(Capsule().strokeBorder(secili ? Color.clear : Theme.glassStroke, lineWidth: 1))
+                .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
     }
 
     private var selectedChips: some View {
@@ -116,8 +159,10 @@ struct RouteBuilderView: View {
                     .buttonStyle(.plain)
                 }
 
-                if suggestions.isEmpty && !query.isEmpty {
-                    Text("\"\(query)\" ile eşleşen bir yer bulunamadı.")
+                if suggestions.isEmpty {
+                    Text(query.isEmpty
+                         ? "Bu kategoride yer bulunamadı."
+                         : "\"\(query)\" ile eşleşen bir yer bulunamadı.")
                         .font(.subheadline)
                         .foregroundStyle(Theme.textTertiary)
                         .padding(.top, 24)
