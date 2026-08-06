@@ -1,0 +1,4062 @@
+[
+ {
+  "name": "Afrodisias",
+  "district": "Karacasu",
+  "province": "Aydın",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Afyon Ulu Camii",
+  "district": "Merkez",
+  "province": "Afyonkarahisar",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Ani Harabeleri",
+  "district": "Merkez",
+  "province": "Kars",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Arslanhane Camii",
+  "district": "Altındağ",
+  "province": "Ankara",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Arslantepe Höyüğü",
+  "district": "Battalgazi",
+  "province": "Malatya",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Ayasofya",
+  "district": "Fatih",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Cumalıkızık",
+  "district": "Yıldırım",
+  "province": "Bursa",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Divriği Ulu Camii ve Darüşşifası",
+  "district": "Divriği",
+  "province": "Sivas",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Diyarbakır Surları",
+  "district": "Sur",
+  "province": "Diyarbakır",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Efes Antik Kenti",
+  "district": "Selçuk",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Eşrefoğlu Camii",
+  "district": "Beyşehir",
+  "province": "Konya",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Gordion",
+  "district": "Polatlı",
+  "province": "Ankara",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Göbeklitepe",
+  "district": "Haliliye",
+  "province": "Şanlıurfa",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Göreme Açık Hava Müzesi",
+  "district": "Göreme",
+  "province": "Nevşehir",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Hattuşa",
+  "district": "Boğazkale",
+  "province": "Çorum",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Hevsel Bahçeleri",
+  "district": "Sur",
+  "province": "Diyarbakır",
+  "category": "Doğa",
+  "popularity": 96
+ },
+ {
+  "name": "Hierapolis",
+  "district": "Pamukkale",
+  "province": "Denizli",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Letoon",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Mahmut Bey Camii",
+  "district": "Kasaba",
+  "province": "Kastamonu",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Nemrut Dağı",
+  "district": "Kahta",
+  "province": "Adıyaman",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Pamukkale Travertenleri",
+  "district": "Pamukkale",
+  "province": "Denizli",
+  "category": "Doğa",
+  "popularity": 96
+ },
+ {
+  "name": "Pergamon Antik Kenti",
+  "district": "Bergama",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Safranbolu Evleri",
+  "district": "Safranbolu",
+  "province": "Karabük",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Selimiye Camii",
+  "district": "Merkez",
+  "province": "Edirne",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Sivrihisar Ulu Camii",
+  "district": "Sivrihisar",
+  "province": "Eskişehir",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Sultanahmet Camii",
+  "district": "Fatih",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Topkapı Sarayı",
+  "district": "Fatih",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Truva Antik Kenti",
+  "district": "Merkez",
+  "province": "Çanakkale",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Ulu Camii",
+  "district": "Osmangazi",
+  "province": "Bursa",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Xanthos",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Çatalhöyük",
+  "district": "Çumra",
+  "province": "Konya",
+  "category": "Tarihi Yer",
+  "popularity": 96
+ },
+ {
+  "name": "Adrasan",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Aizanoi Antik Kenti",
+  "district": "Çavdarhisar",
+  "province": "Kütahya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Akbük",
+  "district": "Didim",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Akbük",
+  "district": "Milas",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Akdamar Adası",
+  "district": "Gevaş",
+  "province": "Van",
+  "category": "Ada",
+  "popularity": 88
+ },
+ {
+  "name": "Akyaka",
+  "district": "Ula",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Akçay",
+  "district": "Edremit",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Alaeddin Tepesi",
+  "district": "Merkez",
+  "province": "Konya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Alanya Kalesi",
+  "district": "Alanya",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Alaçatı",
+  "district": "Çeşme",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Altınkum",
+  "district": "Didim",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Altınoluk",
+  "district": "Edremit",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Amasra Kalesi",
+  "district": "Amasra",
+  "province": "Bartın",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Anıtkabir",
+  "district": "Çankaya",
+  "province": "Ankara",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Aspendos",
+  "district": "Serik",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Avşa Adası",
+  "district": "Erdek",
+  "province": "Balıkesir",
+  "category": "Ada",
+  "popularity": 88
+ },
+ {
+  "name": "Ay Işığı (Moonlight) Plajı",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Ayazma Plajı",
+  "district": "Bozcaada",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Balıklıgöl",
+  "district": "Haliliye",
+  "province": "Şanlıurfa",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Bandırma Vapuru Müze Gemisi",
+  "district": "İlkadım",
+  "province": "Samsun",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Bayburt Kalesi",
+  "district": "Merkez",
+  "province": "Bayburt",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Belek",
+  "district": "Serik",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Bitez",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Bodrum Kalesi",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Bozcaada",
+  "district": "Merkez",
+  "province": "Çanakkale",
+  "category": "Ada",
+  "popularity": 88
+ },
+ {
+  "name": "Büyük Liman Plajı",
+  "district": "Amasra",
+  "province": "Bartın",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Cunda Adası",
+  "district": "Ayvalık",
+  "province": "Balıkesir",
+  "category": "Ada",
+  "popularity": 88
+ },
+ {
+  "name": "Dara Antik Kenti",
+  "district": "Merkez",
+  "province": "Mardin",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Derinkuyu Yeraltı Şehri",
+  "district": "Derinkuyu",
+  "province": "Nevşehir",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Deyrulzafaran Manastırı",
+  "district": "Artuklu",
+  "province": "Mardin",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Didyma Apollon Tapınağı",
+  "district": "Didim",
+  "province": "Aydın",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Diyarbakır Ulu Camii",
+  "district": "Sur",
+  "province": "Diyarbakır",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Dolmabahçe Sarayı",
+  "district": "Beşiktaş",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Erikli Plajı",
+  "district": "Keşan",
+  "province": "Edirne",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Ertuğrul Gazi Türbesi",
+  "district": "Söğüt",
+  "province": "Bilecik",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Galata Kulesi",
+  "district": "Beyoğlu",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Gaziantep Kalesi",
+  "district": "Şahinbey",
+  "province": "Gaziantep",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Gümbet",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Hacı Bayram Camii",
+  "district": "Altındağ",
+  "province": "Ankara",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Halfeti",
+  "district": "Halfeti",
+  "province": "Şanlıurfa",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Harput Kalesi",
+  "district": "Merkez",
+  "province": "Elazığ",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Harran Kümbet Evleri",
+  "district": "Harran",
+  "province": "Şanlıurfa",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Hasankeyf",
+  "district": "Hasankeyf",
+  "province": "Batman",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Hatay Arkeoloji Müzesi",
+  "district": "Antakya",
+  "province": "Hatay",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Ihlara Vadisi",
+  "district": "Güzelyurt",
+  "province": "Aksaray",
+  "category": "Doğa",
+  "popularity": 88
+ },
+ {
+  "name": "Ilıca Plajı",
+  "district": "Çeşme",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Kabak Koyu",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 88
+ },
+ {
+  "name": "Kaleiçi",
+  "district": "Merkez",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Kapalıçarşı",
+  "district": "Fatih",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Kaputaş Plajı",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Karatepe-Aslantaş",
+  "district": "Kadirli",
+  "province": "Osmaniye",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Kayaköy",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Kaymaklı Yeraltı Şehri",
+  "district": "Kaymaklı",
+  "province": "Nevşehir",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Kefalos Plajı",
+  "district": "Gökçeada",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Kelebekler Vadisi",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 88
+ },
+ {
+  "name": "Kemeraltı Çarşısı",
+  "district": "Konak",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Kilyos",
+  "district": "Sarıyer",
+  "province": "İstanbul",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Kleopatra Plajı",
+  "district": "Alanya",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Konyaaltı Plajı",
+  "district": "Merkez",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Kral Kaya Mezarları",
+  "district": "Merkez",
+  "province": "Amasya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Kız Kulesi",
+  "district": "Üsküdar",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Kızkalesi",
+  "district": "Erdemli",
+  "province": "Mersin",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Kızkumu (Orhaniye)",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Ladies Beach",
+  "district": "Kuşadası",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Lara Plajı",
+  "district": "Merkez",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Mamure Kalesi",
+  "district": "Anamur",
+  "province": "Mersin",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Mardin Eski Şehir",
+  "district": "Artuklu",
+  "province": "Mardin",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Marmara Adası",
+  "district": "Erdek",
+  "province": "Balıkesir",
+  "category": "Ada",
+  "popularity": 88
+ },
+ {
+  "name": "Meryem Ana Evi",
+  "district": "Selçuk",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Mevlana Müzesi",
+  "district": "Merkez",
+  "province": "Konya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Miletos Antik Kenti",
+  "district": "Söke",
+  "province": "Aydın",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Myra Antik Kenti",
+  "district": "Demre",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Odunpazarı Evleri",
+  "district": "Odunpazarı",
+  "province": "Eskişehir",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Olympos",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Ovabükü",
+  "district": "Datça",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Palamutbükü",
+  "district": "Datça",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Patara Plajı",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Perge Antik Kenti",
+  "district": "Aksu",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Priene Antik Kenti",
+  "district": "Söke",
+  "province": "Aydın",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Pırlanta Plajı",
+  "district": "Çeşme",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Saat Kulesi",
+  "district": "Konak",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Sagalassos",
+  "district": "Bucak",
+  "province": "Burdur",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Sarıgerme",
+  "district": "Dalaman",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Sarımsaklı Plajı",
+  "district": "Ayvalık",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Side Antik Kenti",
+  "district": "Manavgat",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Side Plajı",
+  "district": "Manavgat",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Sinop Kalesi",
+  "district": "Merkez",
+  "province": "Sinop",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "St. Pierre Kilisesi",
+  "district": "Antakya",
+  "province": "Hatay",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Sultanhanı Kervansarayı",
+  "district": "Sultanhanı",
+  "province": "Aksaray",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Süleymaniye Camii",
+  "district": "Fatih",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Sümela Manastırı",
+  "district": "Maçka",
+  "province": "Trabzon",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Taşköprü",
+  "district": "Seyhan",
+  "province": "Adana",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Termessos",
+  "district": "Merkez",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Trabzon Ayasofya",
+  "district": "Merkez",
+  "province": "Trabzon",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Turgutreis",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Turunç",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Uludağ Milli Parkı",
+  "district": "Osmangazi",
+  "province": "Bursa",
+  "category": "Doğa",
+  "popularity": 88
+ },
+ {
+  "name": "Van Kalesi",
+  "district": "Merkez",
+  "province": "Van",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Yalıboyu Evleri",
+  "district": "Merkez",
+  "province": "Amasya",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Yalıkavak",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Yazılıkaya Açık Hava Tapınağı",
+  "district": "Boğazkale",
+  "province": "Çorum",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Yerebatan Sarnıcı",
+  "district": "Fatih",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Yeşil Türbe",
+  "district": "Osmangazi",
+  "province": "Bursa",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Zeugma Mozaik Müzesi",
+  "district": "Şahinbey",
+  "province": "Gaziantep",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Çalış",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Çifte Minareli Medrese",
+  "district": "Yakutiye",
+  "province": "Erzurum",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Çıralı",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Ölüdeniz",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Ören",
+  "district": "Burhaniye",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Ören",
+  "district": "Milas",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "İncekum",
+  "district": "Alanya",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "İnkumu",
+  "district": "Merkez",
+  "province": "Bartın",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "İshak Paşa Sarayı",
+  "district": "Doğubayazıt",
+  "province": "Ağrı",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "İstiklal Caddesi",
+  "district": "Beyoğlu",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "İztuzu Plajı",
+  "district": "Ortaca",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "İçmeler",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Şile Plajı",
+  "district": "Şile",
+  "province": "İstanbul",
+  "category": "Plaj",
+  "popularity": 88
+ },
+ {
+  "name": "Şirince",
+  "district": "Selçuk",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 88
+ },
+ {
+  "name": "Abana Sahili",
+  "district": "Abana",
+  "province": "Kastamonu",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Abant Gölü",
+  "district": "Merkez",
+  "province": "Bolu",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Afyon Kalesi",
+  "district": "Merkez",
+  "province": "Afyonkarahisar",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ahlat Selçuklu Mezarlığı",
+  "district": "Ahlat",
+  "province": "Bitlis",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ahmed-i Hani Türbesi",
+  "district": "Doğubayazıt",
+  "province": "Ağrı",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Akkum Plajı",
+  "district": "Seferihisar",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Akliman",
+  "district": "Merkez",
+  "province": "Sinop",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Aksaray Ulu Camii",
+  "district": "Merkez",
+  "province": "Aksaray",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Aksazlar Koyu",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Aktur Plajı",
+  "district": "Datça",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Akyarlar",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Akçaabat Sahili",
+  "district": "Akçaabat",
+  "province": "Trabzon",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Akçakoca Sahili",
+  "district": "Akçakoca",
+  "province": "Düzce",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Alacahöyük",
+  "district": "Alacahöyük",
+  "province": "Çorum",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Alaeddin Bey Camii",
+  "district": "Merkez",
+  "province": "Muş",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Alaçam Sahili",
+  "district": "Alaçam",
+  "province": "Samsun",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Altındere Milli Parkı",
+  "district": "Maçka",
+  "province": "Trabzon",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Altınkum (Çeşme)",
+  "district": "Çeşme",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Altınova",
+  "district": "Ayvalık",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Amasya Kalesi",
+  "district": "Merkez",
+  "province": "Amasya",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Amisos Tepesi",
+  "district": "İlkadım",
+  "province": "Samsun",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Amos Antik Kenti",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Anadolu Medeniyetleri Müzesi",
+  "district": "Altındağ",
+  "province": "Ankara",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Anamur Plajı",
+  "district": "Anamur",
+  "province": "Mersin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Anavarza Antik Kenti",
+  "district": "Kozan",
+  "province": "Adana",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Anemurium Antik Kenti",
+  "district": "Anamur",
+  "province": "Mersin",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ankara Kalesi",
+  "district": "Altındağ",
+  "province": "Ankara",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Antiokheia Antik Kenti",
+  "district": "Yalvaç",
+  "province": "Isparta",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Anzak Koyu",
+  "district": "Eceabat",
+  "province": "Çanakkale",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ardahan Kalesi",
+  "district": "Merkez",
+  "province": "Ardahan",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ardıç Plajı",
+  "district": "Karaburun",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Armutlu Sahili",
+  "district": "Armutlu",
+  "province": "Yalova",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Arsameia Antik Kenti",
+  "district": "Kahta",
+  "province": "Adıyaman",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Arsuz Plajı",
+  "district": "Arsuz",
+  "province": "Hatay",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Artemis Tapınağı",
+  "district": "Selçuk",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Asklepion",
+  "district": "Bergama",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Aslanburnu",
+  "district": "Kuşadası",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Assos (Behramkale)",
+  "district": "Ayvacık",
+  "province": "Çanakkale",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Assos Koyu",
+  "district": "Ayvacık",
+  "province": "Çanakkale",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Atakent",
+  "district": "Silifke",
+  "province": "Mersin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Atakum Sahili",
+  "district": "Atakum",
+  "province": "Samsun",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Atatürk Köşkü",
+  "district": "Merkez",
+  "province": "Trabzon",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Augustus Tapınağı",
+  "district": "Altındağ",
+  "province": "Ankara",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Avanos Çömlekçilik",
+  "district": "Avanos",
+  "province": "Nevşehir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ayancık Sahili",
+  "district": "Ayancık",
+  "province": "Sinop",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Ayas Plajı",
+  "district": "Yumurtalık",
+  "province": "Adana",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Ayasofya Camii (İznik)",
+  "district": "İznik",
+  "province": "Bursa",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ayayorgi Koyu",
+  "district": "Çeşme",
+  "province": "İzmir",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Ayazini Frig Vadisi",
+  "district": "İhsaniye",
+  "province": "Afyonkarahisar",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ayaş",
+  "district": "Erdemli",
+  "province": "Mersin",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ayder Yaylası",
+  "district": "Çamlıhemşin",
+  "province": "Rize",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Aydıncık Plajı",
+  "district": "Gökçeada",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Aydıncık Sahili",
+  "district": "Aydıncık",
+  "province": "Mersin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Aydıntepe Yeraltı Şehri",
+  "district": "Aydıntepe",
+  "province": "Bayburt",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Aynalıgöl Mağarası",
+  "district": "Tarsus",
+  "province": "Mersin",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Ayvalık Adaları",
+  "district": "Ayvalık",
+  "province": "Balıkesir",
+  "category": "Ada",
+  "popularity": 60
+ },
+ {
+  "name": "Azmak Nehri",
+  "district": "Ula",
+  "province": "Muğla",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Ağva",
+  "district": "Şile",
+  "province": "İstanbul",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Aşk Vadisi",
+  "district": "Göreme",
+  "province": "Nevşehir",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Aşık Paşa Türbesi",
+  "district": "Merkez",
+  "province": "Kırşehir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Badavut Plajı",
+  "district": "Ayvalık",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Bademli",
+  "district": "Dikili",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Bafa Gölü",
+  "district": "Söke",
+  "province": "Aydın",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Balatlar Kilisesi",
+  "district": "Merkez",
+  "province": "Sinop",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Balıklıova",
+  "district": "Urla",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Bardakçı Koyu",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Barhal Kilisesi",
+  "district": "Yusufeli",
+  "province": "Artvin",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Basilica Therma Roma Hamamı",
+  "district": "Sarıkaya",
+  "province": "Yozgat",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Battalgazi Ulu Camii",
+  "district": "Battalgazi",
+  "province": "Malatya",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Bağla Plajı",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Bağırganlı",
+  "district": "Kandıra",
+  "province": "Kocaeli",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Beldibi",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Belgrad Ormanı",
+  "district": "Sarıyer",
+  "province": "İstanbul",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Beypazarı Tarihi Evleri",
+  "district": "Beypazarı",
+  "province": "Ankara",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Beyşehir Gölü",
+  "district": "Beyşehir",
+  "province": "Konya",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Beşikdüzü Sahili",
+  "district": "Beşikdüzü",
+  "province": "Trabzon",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Binbir Kilise",
+  "district": "Merkez",
+  "province": "Karaman",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Bitlis Kalesi",
+  "district": "Merkez",
+  "province": "Bitlis",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Blaundos Antik Kenti",
+  "district": "Ulubey",
+  "province": "Uşak",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Boncuklu Koyu",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Boyalık Plajı",
+  "district": "Çeşme",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Bozburun",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Bozköy",
+  "district": "Amasra",
+  "province": "Bartın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Boztepe",
+  "district": "Altınordu",
+  "province": "Ordu",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Boztepe (Trabzon)",
+  "district": "Merkez",
+  "province": "Trabzon",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Bozyazı Plajı",
+  "district": "Bozyazı",
+  "province": "Mersin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Boğaziçi",
+  "district": "Milas",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Boğsak",
+  "district": "Silifke",
+  "province": "Mersin",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Bulak Mencilis Mağarası",
+  "district": "Safranbolu",
+  "province": "Karabük",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Burgazada",
+  "district": "Adalar",
+  "province": "İstanbul",
+  "category": "Ada",
+  "popularity": 60
+ },
+ {
+  "name": "Büyük Çakıl Plajı",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Büyükada",
+  "district": "Adalar",
+  "province": "İstanbul",
+  "category": "Ada",
+  "popularity": 60
+ },
+ {
+  "name": "Cacabey Medresesi",
+  "district": "Merkez",
+  "province": "Kırşehir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Cebeci Plajı",
+  "district": "Kandıra",
+  "province": "Kocaeli",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Cehennemağzı Mağaraları",
+  "district": "Ereğli",
+  "province": "Zonguldak",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Cendere Köprüsü",
+  "district": "Kahta",
+  "province": "Adıyaman",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Cennet ve Cehennem Obrukları",
+  "district": "Silifke",
+  "province": "Mersin",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Cinci Han",
+  "district": "Safranbolu",
+  "province": "Karabük",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Cizre Ulu Camii",
+  "district": "Cizre",
+  "province": "Şırnak",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Dalyan",
+  "district": "Ortaca",
+  "province": "Muğla",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Damlataş Mağarası",
+  "district": "Alanya",
+  "province": "Antalya",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Danişment",
+  "district": "Keşan",
+  "province": "Edirne",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Dardanos",
+  "district": "Merkez",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Demircili",
+  "district": "Urla",
+  "province": "İzmir",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Denizgiren",
+  "district": "Karaburun",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Denizköy",
+  "district": "Dikili",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Devrent Vadisi",
+  "district": "Ürgüp",
+  "province": "Nevşehir",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Dilek Yarımadası Milli Parkı",
+  "district": "Kuşadası",
+  "province": "Aydın",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Domuzbükü",
+  "district": "Datça",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Doğanbey",
+  "district": "Söke",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Doğanbey (Seferihisar)",
+  "district": "Seferihisar",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Doğanyurt Sahili",
+  "district": "Doğanyurt",
+  "province": "Kastamonu",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Dupnisa Mağarası",
+  "district": "Demirköy",
+  "province": "Kırklareli",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Dörtkilise",
+  "district": "Yusufeli",
+  "province": "Artvin",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Düden Şelalesi",
+  "district": "Merkez",
+  "province": "Antalya",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Ekincik Koyu",
+  "district": "Köyceğiz",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "El Aman Kervansarayı",
+  "district": "Merkez",
+  "province": "Bitlis",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Enez Sahili",
+  "district": "Enez",
+  "province": "Edirne",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Erciyes Kayak Merkezi",
+  "district": "Melikgazi",
+  "province": "Kayseri",
+  "category": "Kayak Merkezi",
+  "popularity": 60
+ },
+ {
+  "name": "Erdek Merkez",
+  "district": "Erdek",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Erzurum Kalesi",
+  "district": "Yakutiye",
+  "province": "Erzurum",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Eski Camii",
+  "district": "Merkez",
+  "province": "Edirne",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Eski Foça",
+  "district": "Foça",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Espiye Sahili",
+  "district": "Espiye",
+  "province": "Giresun",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Eğirdir Gölü",
+  "district": "Eğirdir",
+  "province": "Isparta",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Fatsa Sahili",
+  "district": "Fatsa",
+  "province": "Ordu",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Filyos Sahili",
+  "district": "Çaycuma",
+  "province": "Zonguldak",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Finike Sahili",
+  "district": "Finike",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Gaziköy",
+  "district": "Şarköy",
+  "province": "Tekirdağ",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Gelibolu Yarımadası Tarihi Milli Parkı",
+  "district": "Eceabat",
+  "province": "Çanakkale",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Gemiler Plajı",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Gerze Sahili",
+  "district": "Gerze",
+  "province": "Sinop",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Gevher Nesibe Medresesi",
+  "district": "Melikgazi",
+  "province": "Kayseri",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Geyikli",
+  "district": "Ezine",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Gideros Koyu",
+  "district": "Cide",
+  "province": "Kastamonu",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Giresun Adası",
+  "district": "Merkez",
+  "province": "Giresun",
+  "category": "Ada",
+  "popularity": 60
+ },
+ {
+  "name": "Giresun Kalesi",
+  "district": "Merkez",
+  "province": "Giresun",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Göcek",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Gökova Körfezi",
+  "district": "Ula",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Göynük Kanyonu",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Göynük Tarihi Evleri",
+  "district": "Göynük",
+  "province": "Bolu",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Gülbahçe",
+  "district": "Urla",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Güllük",
+  "district": "Milas",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Gülyalı Sahili",
+  "district": "Gülyalı",
+  "province": "Ordu",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Gümüldür",
+  "district": "Menderes",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Gümüşkesen Anıt Mezarı",
+  "district": "Milas",
+  "province": "Muğla",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Gümüşler Manastırı",
+  "district": "Merkez",
+  "province": "Niğde",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Gündoğan",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Günnücek",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Güre",
+  "district": "Edremit",
+  "province": "Balıkesir",
+  "category": "Termal",
+  "popularity": 60
+ },
+ {
+  "name": "Güvercinlik Vadisi",
+  "district": "Göreme",
+  "province": "Nevşehir",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Güzelcehisar",
+  "district": "Merkez",
+  "province": "Bartın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Güzelyalı",
+  "district": "Merkez",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Habbele Plajı",
+  "district": "Bozcaada",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Habib-i Neccar Camii",
+  "district": "Antakya",
+  "province": "Hatay",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Hamsilos Koyu",
+  "district": "Merkez",
+  "province": "Sinop",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Hamzakoy",
+  "district": "Gelibolu",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Harput Ulu Camii",
+  "district": "Merkez",
+  "province": "Elazığ",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Hayıtbükü",
+  "district": "Datça",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Heybeliada",
+  "district": "Adalar",
+  "province": "İstanbul",
+  "category": "Ada",
+  "popularity": 60
+ },
+ {
+  "name": "Hisarönü",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Hopa Sahili",
+  "district": "Hopa",
+  "province": "Artvin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Hoşap Kalesi",
+  "district": "Gürpınar",
+  "province": "Van",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Hüdai Kaplıcaları",
+  "district": "Sandıklı",
+  "province": "Afyonkarahisar",
+  "category": "Termal",
+  "popularity": 60
+ },
+ {
+  "name": "Ilgarini Mağarası",
+  "district": "Küre",
+  "province": "Kastamonu",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Isparta Ulu Camii",
+  "district": "Merkez",
+  "province": "Isparta",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Işıklı Gölü",
+  "district": "Çivril",
+  "province": "Denizli",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Justinianus Köprüsü",
+  "district": "Merkez",
+  "province": "Sakarya",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kabatepe",
+  "district": "Eceabat",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kadriye",
+  "district": "Serik",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kadıkalesi",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kadırga Koyu",
+  "district": "Ayvacık",
+  "province": "Çanakkale",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Kahramanmaraş Ulu Camii",
+  "district": "Merkez",
+  "province": "Kahramanmaraş",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kahyalar Koyu",
+  "district": "Gazipaşa",
+  "province": "Antalya",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Kalemlik Plajı",
+  "district": "Aliağa",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kalkan",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kalkan Plajı",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kapulukaya Kanyonu",
+  "district": "Merkez",
+  "province": "Kırıkkale",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Kapuz Plajı",
+  "district": "Merkez",
+  "province": "Zonguldak",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Karaağaç",
+  "district": "Gömeç",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Karaca Mağarası",
+  "district": "Torul",
+  "province": "Gümüşhane",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Karacabey Boğazı",
+  "district": "Karacabey",
+  "province": "Bursa",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Karagöl",
+  "district": "Borçka",
+  "province": "Artvin",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Karaincir",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Karaman Kalesi",
+  "district": "Merkez",
+  "province": "Karaman",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Karanlık Kanyon",
+  "district": "Kemaliye",
+  "province": "Erzincan",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Karasu Plajı",
+  "district": "Kuşadası",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Karasu Plajı",
+  "district": "Karasu",
+  "province": "Sakarya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Karataş Plajı",
+  "district": "Karataş",
+  "province": "Adana",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Karaöz",
+  "district": "Kumluca",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kargı Koyu",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Kargı Koyu",
+  "district": "Datça",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Kariye Camii",
+  "district": "Fatih",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kars Kalesi",
+  "district": "Merkez",
+  "province": "Kars",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kartalkaya Kayak Merkezi",
+  "district": "Gerede",
+  "province": "Bolu",
+  "category": "Kayak Merkezi",
+  "popularity": 60
+ },
+ {
+  "name": "Kastamonu Kalesi",
+  "district": "Merkez",
+  "province": "Kastamonu",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kasımiye Medresesi",
+  "district": "Artuklu",
+  "province": "Mardin",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Katrancı Koyu",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Kaunos Antik Kenti",
+  "district": "Ortaca",
+  "province": "Muğla",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kayseri Kalesi",
+  "district": "Melikgazi",
+  "province": "Kayseri",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kazdağları Milli Parkı",
+  "district": "Edremit",
+  "province": "Balıkesir",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Kefken",
+  "district": "Kandıra",
+  "province": "Kocaeli",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kekova",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Ada",
+  "popularity": 60
+ },
+ {
+  "name": "Kemah Kalesi",
+  "district": "Kemah",
+  "province": "Erzincan",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kemalpaşa Plajı",
+  "district": "Kemalpaşa",
+  "province": "Artvin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kerpe",
+  "district": "Kandıra",
+  "province": "Kocaeli",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kibyra Antik Kenti",
+  "district": "Gölhisar",
+  "province": "Burdur",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kilis Ulu Camii",
+  "district": "Merkez",
+  "province": "Kilis",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kilitbahir",
+  "district": "Merkez",
+  "province": "Çanakkale",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kiriş",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Klazomenai",
+  "district": "Urla",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kleopatra Antik Havuzu",
+  "district": "Pamukkale",
+  "province": "Denizli",
+  "category": "Termal",
+  "popularity": 60
+ },
+ {
+  "name": "Knidos Antik Kenti",
+  "district": "Datça",
+  "province": "Muğla",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kocaali Sahili",
+  "district": "Kocaali",
+  "province": "Sakarya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kocadere",
+  "district": "Didim",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Konacık",
+  "district": "Arsuz",
+  "province": "Hatay",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Konaklı",
+  "district": "Alanya",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Koru Plajı",
+  "district": "Gazipaşa",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Koru Plajı (Yalova)",
+  "district": "Çınarcık",
+  "province": "Yalova",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kozan Kalesi",
+  "district": "Kozan",
+  "province": "Adana",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kumbaba Plajı",
+  "district": "Şile",
+  "province": "İstanbul",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kumbağ",
+  "district": "Süleymanpaşa",
+  "province": "Tekirdağ",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kumla Plajı",
+  "district": "Gemlik",
+  "province": "Bursa",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kumlubükü",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Kundu",
+  "district": "Aksu",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kurtuluş Plajı",
+  "district": "Bandırma",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kurucaşile Sahili",
+  "district": "Kurucaşile",
+  "province": "Bartın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kurşunlu Sahili",
+  "district": "Gemlik",
+  "province": "Bursa",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kuğulu Park",
+  "district": "Çankaya",
+  "province": "Ankara",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Kuşkayası Yol Anıtı",
+  "district": "Amasra",
+  "province": "Bartın",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Köyceğiz Gölü",
+  "district": "Köyceğiz",
+  "province": "Muğla",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Kültepe (Kaniş-Karum)",
+  "district": "Kocasinan",
+  "province": "Kayseri",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kümbet Camii",
+  "district": "Merkez",
+  "province": "Kars",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Kümbet Yaylası",
+  "district": "Dereli",
+  "province": "Giresun",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Kütahya Kalesi",
+  "district": "Merkez",
+  "province": "Kütahya",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Küçük Çakıl Plajı",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kınalıada",
+  "district": "Adalar",
+  "province": "İstanbul",
+  "category": "Ada",
+  "popularity": 60
+ },
+ {
+  "name": "Kıyıköy",
+  "district": "Vize",
+  "province": "Kırklareli",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kıyıkışlacık",
+  "district": "Milas",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kızılağaç",
+  "district": "Manavgat",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Kızılırmak Deltası Kuş Cenneti",
+  "district": "Bafra",
+  "province": "Samsun",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Labranda Antik Kenti",
+  "district": "Milas",
+  "province": "Muğla",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Laodikeia Antik Kenti",
+  "district": "Pamukkale",
+  "province": "Denizli",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Latifoğlu Konağı",
+  "district": "Merkez",
+  "province": "Tokat",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Laz Koyu",
+  "district": "Gökçeada",
+  "province": "Çanakkale",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Limanağzı",
+  "district": "Kaş",
+  "province": "Antalya",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Limanköy",
+  "district": "Demirköy",
+  "province": "Kırklareli",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Limonlu",
+  "district": "Erdemli",
+  "province": "Mersin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Mahmutlar",
+  "district": "Alanya",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Manavgat Şelalesi",
+  "district": "Manavgat",
+  "province": "Antalya",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Maraş Kalesi",
+  "district": "Merkez",
+  "province": "Kahramanmaraş",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Marmaraereğlisi Sahili",
+  "district": "Marmaraereğlisi",
+  "province": "Tekirdağ",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Mavikent",
+  "district": "Kumluca",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Mavişehir",
+  "district": "Didim",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Maçahel (Camili)",
+  "district": "Borçka",
+  "province": "Artvin",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Mecidiye",
+  "district": "Keşan",
+  "province": "Edirne",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Melenağzı",
+  "district": "Akçakoca",
+  "province": "Düzce",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Mençuna Şelalesi",
+  "district": "Arhavi",
+  "province": "Artvin",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Meriç Köprüsü",
+  "district": "Merkez",
+  "province": "Edirne",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Mermerli Plajı",
+  "district": "Merkez",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Mesudiye Plajı",
+  "district": "Datça",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Meydan Medresesi",
+  "district": "Merkez",
+  "province": "Hakkari",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Meydan Plajı",
+  "district": "Samandağ",
+  "province": "Hatay",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Mezitli Sahili",
+  "district": "Mezitli",
+  "province": "Mersin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Midyat Konukevi",
+  "district": "Midyat",
+  "province": "Mardin",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Mimoza Koyu",
+  "district": "Karaburun",
+  "province": "İzmir",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Mudanya Sahili",
+  "district": "Mudanya",
+  "province": "Bursa",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Mudurnu Tarihi Evleri",
+  "district": "Mudurnu",
+  "province": "Bolu",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Mugada",
+  "district": "Amasra",
+  "province": "Bartın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Munzur Vadisi Milli Parkı",
+  "district": "Ovacık",
+  "province": "Tunceli",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Muradiye Camii",
+  "district": "Şehzadeler",
+  "province": "Manisa",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Muradiye Şelalesi",
+  "district": "Muradiye",
+  "province": "Van",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Murat Köprüsü",
+  "district": "Merkez",
+  "province": "Muş",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Narlı (Erdek)",
+  "district": "Erdek",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Narlı Plajı",
+  "district": "Edremit",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Narlıkuyu",
+  "district": "Silifke",
+  "province": "Mersin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Nemrut Krater Gölü",
+  "district": "Tatvan",
+  "province": "Bitlis",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Niksar Kalesi",
+  "district": "Niksar",
+  "province": "Tokat",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Niğde Kalesi",
+  "district": "Merkez",
+  "province": "Niğde",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Nuh Peygamber Türbesi",
+  "district": "Cizre",
+  "province": "Şırnak",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Nysa Antik Kenti",
+  "district": "Sultanhisar",
+  "province": "Aydın",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ocaklar",
+  "district": "Erdek",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "On Gözlü Köprü",
+  "district": "Sur",
+  "province": "Diyarbakır",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ortakent",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Palandöken Kayak Merkezi",
+  "district": "Yakutiye",
+  "province": "Erzurum",
+  "category": "Kayak Merkezi",
+  "popularity": 60
+ },
+ {
+  "name": "Palovit Şelalesi",
+  "district": "Çamlıhemşin",
+  "province": "Rize",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Pamucak Plajı",
+  "district": "Selçuk",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Pazar Sahili",
+  "district": "Pazar",
+  "province": "Rize",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Paşabağ",
+  "district": "Avanos",
+  "province": "Nevşehir",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Paşaoğlu Konağı",
+  "district": "Altınordu",
+  "province": "Ordu",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Pelitköy",
+  "district": "Burhaniye",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Perre Antik Kenti",
+  "district": "Merkez",
+  "province": "Adıyaman",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Pertek Kalesi",
+  "district": "Pertek",
+  "province": "Tunceli",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Perşembe Yaylası",
+  "district": "Perşembe",
+  "province": "Ordu",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Pessinus Antik Kenti",
+  "district": "Sivrihisar",
+  "province": "Eskişehir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Phaselis",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Philadelphia Antik Kenti",
+  "district": "Alaşehir",
+  "province": "Manisa",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Piraziz Plajı",
+  "district": "Piraziz",
+  "province": "Giresun",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Pokut Yaylası",
+  "district": "Çamlıhemşin",
+  "province": "Rize",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Porsuk Çayı",
+  "district": "Odunpazarı",
+  "province": "Eskişehir",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Prusias ad Hypium Antik Kenti",
+  "district": "Konuralp",
+  "province": "Düzce",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Pygale (Güvercinada)",
+  "district": "Kuşadası",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Ravanda Kalesi",
+  "district": "Merkez",
+  "province": "Kilis",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Riva Plajı",
+  "district": "Beykoz",
+  "province": "İstanbul",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Rize Kalesi",
+  "district": "Merkez",
+  "province": "Rize",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Rumeli Feneri",
+  "district": "Sarıyer",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Rumeli Hisarı",
+  "district": "Sarıyer",
+  "province": "İstanbul",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Rumkale",
+  "district": "Nizip",
+  "province": "Gaziantep",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Rüstem Paşa Külliyesi",
+  "district": "Merkez",
+  "province": "Tekirdağ",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Sabancı Merkez Camii",
+  "district": "Seyhan",
+  "province": "Adana",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Saklıkent Kanyonu",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Salda Gölü",
+  "district": "Yeşilova",
+  "province": "Burdur",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Samandere Şelalesi",
+  "district": "Yığılca",
+  "province": "Düzce",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Samanlık Koyu",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Santa Harabeleri",
+  "district": "Torul",
+  "province": "Gümüşhane",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Sardes Antik Kenti",
+  "district": "Salihli",
+  "province": "Manisa",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Sarpıncık",
+  "district": "Karaburun",
+  "province": "İzmir",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Sarsala Koyu",
+  "district": "Dalaman",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Sarıkamış Kayak Merkezi",
+  "district": "Sarıkamış",
+  "province": "Kars",
+  "category": "Kayak Merkezi",
+  "popularity": 60
+ },
+ {
+  "name": "Sarıkum",
+  "district": "Merkez",
+  "province": "Sinop",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Selimiye",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Siirt Ulu Camii",
+  "district": "Merkez",
+  "province": "Siirt",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Siren Kayalıkları",
+  "district": "Foça",
+  "province": "İzmir",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Sivrice Koyu",
+  "district": "Ayvacık",
+  "province": "Çanakkale",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Soli Pompeiopolis",
+  "district": "Mezitli",
+  "province": "Mersin",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Spil Dağı Milli Parkı",
+  "district": "Şehzadeler",
+  "province": "Manisa",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "St. Jean Bazilikası",
+  "district": "Selçuk",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Stratonikeia Antik Kenti",
+  "district": "Yatağan",
+  "province": "Muğla",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Sula Monastır",
+  "district": "Demre",
+  "province": "Antalya",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Sultan Sazlığı Milli Parkı",
+  "district": "Develi",
+  "province": "Kayseri",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Sultaniye Kaplıcaları",
+  "district": "Köyceğiz",
+  "province": "Muğla",
+  "category": "Termal",
+  "popularity": 60
+ },
+ {
+  "name": "Sulubahçe Plajı",
+  "district": "Bozcaada",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Susanoğlu",
+  "district": "Silifke",
+  "province": "Mersin",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Söğüt Koyu",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Sığacık",
+  "district": "Seferihisar",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Taksiyarhis Kilisesi",
+  "district": "Ayvalık",
+  "province": "Balıkesir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Taraklı Tarihi Evleri",
+  "district": "Taraklı",
+  "province": "Sakarya",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Tarsus Şelalesi",
+  "district": "Tarsus",
+  "province": "Mersin",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Tavşanburnu",
+  "district": "Didim",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Taş Mescit",
+  "district": "Merkez",
+  "province": "Çankırı",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Taş Yolu",
+  "district": "Kemaliye",
+  "province": "Erzincan",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Taşlıburun",
+  "district": "Dalaman",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Tekirova",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Tekke Plajı",
+  "district": "Çeşme",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Teos Antik Kenti",
+  "district": "Seferihisar",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Tirebolu Sahili",
+  "district": "Tirebolu",
+  "province": "Giresun",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Titreyengöl",
+  "district": "Manavgat",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Titus Tüneli",
+  "district": "Samandağ",
+  "province": "Hatay",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Tokat Kalesi",
+  "district": "Merkez",
+  "province": "Tokat",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Toprakkale",
+  "district": "Merkez",
+  "province": "Osmaniye",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Torba",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Tortum Şelalesi",
+  "district": "Uzundere",
+  "province": "Erzurum",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Turan Plajı",
+  "district": "Erdek",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Tuzluca Tuz Mağaraları",
+  "district": "Tuzluca",
+  "province": "Iğdır",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Tyana Antik Kenti",
+  "district": "Bor",
+  "province": "Niğde",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Türkeli Sahili",
+  "district": "Türkeli",
+  "province": "Sinop",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Ulaş Plajı",
+  "district": "Alanya",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Ulubey Kanyonu",
+  "district": "Ulubey",
+  "province": "Uşak",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Uludağ Kayak Merkezi",
+  "district": "Nilüfer",
+  "province": "Bursa",
+  "category": "Kayak Merkezi",
+  "popularity": 60
+ },
+ {
+  "name": "Urla İskele",
+  "district": "Urla",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Uzuncaburç",
+  "district": "Silifke",
+  "province": "Mersin",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Uzungöl",
+  "district": "Çaykara",
+  "province": "Trabzon",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Uzunkum",
+  "district": "Kuşadası",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Uzunkum",
+  "district": "Şile",
+  "province": "İstanbul",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Uzunkum Plajı",
+  "district": "Merkez",
+  "province": "Zonguldak",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Uşak Arkeoloji Müzesi",
+  "district": "Merkez",
+  "province": "Uşak",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Vakfıkebir Sahili",
+  "district": "Vakfıkebir",
+  "province": "Trabzon",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Valla Kanyonu",
+  "district": "Küre",
+  "province": "Kastamonu",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Van Gölü",
+  "district": "Merkez",
+  "province": "Van",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Veysel Karani Türbesi",
+  "district": "Baykan",
+  "province": "Siirt",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Vize Kalesi",
+  "district": "Vize",
+  "province": "Kırklareli",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Yahşi Plajı",
+  "district": "Bodrum",
+  "province": "Muğla",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Yakakent Sahili",
+  "district": "Yakakent",
+  "province": "Samsun",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Yakutiye Medresesi",
+  "district": "Yakutiye",
+  "province": "Erzurum",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Yalova Termal Kaplıcaları",
+  "district": "Termal",
+  "province": "Yalova",
+  "category": "Termal",
+  "popularity": 60
+ },
+ {
+  "name": "Yanartaş (Chimaera)",
+  "district": "Kemer",
+  "province": "Antalya",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Yavansu",
+  "district": "Kuşadası",
+  "province": "Aydın",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Yazılıkaya Midas Anıtı",
+  "district": "Han",
+  "province": "Eskişehir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Yedigöller Milli Parkı",
+  "district": "Mengen",
+  "province": "Bolu",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Yeni Foça",
+  "district": "Foça",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Yeşilada",
+  "district": "Eğirdir",
+  "province": "Isparta",
+  "category": "Ada",
+  "popularity": 60
+ },
+ {
+  "name": "Yumurtalık Plajı",
+  "district": "Yumurtalık",
+  "province": "Adana",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Yörükali Plajı",
+  "district": "Adalar",
+  "province": "İstanbul",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Yürüyen Köşk",
+  "district": "Merkez",
+  "province": "Yalova",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Yılankale",
+  "district": "Ceyhan",
+  "province": "Adana",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Yıldızkoy",
+  "district": "Gökçeada",
+  "province": "Çanakkale",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Zağnos Paşa Camii",
+  "district": "Karesi",
+  "province": "Balıkesir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Zeytineli",
+  "district": "Urla",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Zeytinli",
+  "district": "Edremit",
+  "province": "Balıkesir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Zeytinli Köyü",
+  "district": "Gökçeada",
+  "province": "Çanakkale",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Zilkale",
+  "district": "Çamlıhemşin",
+  "province": "Rize",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Ziraat Botanik Çay Bahçesi",
+  "district": "Merkez",
+  "province": "Rize",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Zonguldak Maden Müzesi",
+  "district": "Merkez",
+  "province": "Zonguldak",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Çaka Plajı",
+  "district": "Perşembe",
+  "province": "Ordu",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Çamlı",
+  "district": "Marmaris",
+  "province": "Muğla",
+  "category": "Koy",
+  "popularity": 60
+ },
+ {
+  "name": "Çandarlı",
+  "district": "Dikili",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Çankırı Tuz Mağarası",
+  "district": "Merkez",
+  "province": "Çankırı",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Çapanoğlu Camii",
+  "district": "Merkez",
+  "province": "Yozgat",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Çatalzeytin Sahili",
+  "district": "Çatalzeytin",
+  "province": "Kastamonu",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Çavuştepe Kalesi",
+  "district": "Gürpınar",
+  "province": "Van",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Çayeli Sahili",
+  "district": "Çayeli",
+  "province": "Rize",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Çevlik",
+  "district": "Samandağ",
+  "province": "Hatay",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Çeşme Kalesi",
+  "district": "Çeşme",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Çifte Minareli Medrese (Sivas)",
+  "district": "Merkez",
+  "province": "Sivas",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Çimenlik Kalesi",
+  "district": "Merkez",
+  "province": "Çanakkale",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Çoban Mustafa Paşa Külliyesi",
+  "district": "Gebze",
+  "province": "Kocaeli",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Çolaklı",
+  "district": "Manavgat",
+  "province": "Antalya",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Çıldır Gölü",
+  "district": "Çıldır",
+  "province": "Kars",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Çınarcık Plajı",
+  "district": "Çınarcık",
+  "province": "Yalova",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Çır Şelalesi",
+  "district": "Solhan",
+  "province": "Bingöl",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Ölüdeniz Babadağ",
+  "district": "Fethiye",
+  "province": "Muğla",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Özdere",
+  "district": "Menderes",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Ürkmez",
+  "district": "Seferihisar",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Üç Güzeller",
+  "district": "Ürgüp",
+  "province": "Nevşehir",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Üç Şerefeli Camii",
+  "district": "Merkez",
+  "province": "Edirne",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "İnce Minareli Medrese",
+  "district": "Merkez",
+  "province": "Konya",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "İnebolu Sahili",
+  "district": "İnebolu",
+  "province": "Kastamonu",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "İzmir Agorası",
+  "district": "Konak",
+  "province": "İzmir",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "İzmit Saat Kulesi",
+  "district": "İzmit",
+  "province": "Kocaeli",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "İznik Gölü",
+  "district": "İznik",
+  "province": "Bursa",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "İznik Surları",
+  "district": "İznik",
+  "province": "Bursa",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "İğneada Longoz Ormanları",
+  "district": "Demirköy",
+  "province": "Kırklareli",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "İğneada Plajı",
+  "district": "Demirköy",
+  "province": "Kırklareli",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "İşhan Kilisesi",
+  "district": "Yusufeli",
+  "province": "Artvin",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Şarköy Plajı",
+  "district": "Şarköy",
+  "province": "Tekirdağ",
+  "category": "Plaj",
+  "popularity": 60
+ },
+ {
+  "name": "Şavşat Karagöl",
+  "district": "Şavşat",
+  "province": "Artvin",
+  "category": "Göl",
+  "popularity": 60
+ },
+ {
+  "name": "Şeyh Edebali Türbesi",
+  "district": "Merkez",
+  "province": "Bilecik",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Şeytan Kalesi",
+  "district": "Damal",
+  "province": "Ardahan",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Şeytan Sofrası",
+  "district": "Ayvalık",
+  "province": "Balıkesir",
+  "category": "Doğa",
+  "popularity": 60
+ },
+ {
+  "name": "Şifaiye Medresesi",
+  "district": "Merkez",
+  "province": "Sivas",
+  "category": "Tarihi Yer",
+  "popularity": 60
+ },
+ {
+  "name": "Şifne",
+  "district": "Çeşme",
+  "province": "İzmir",
+  "category": "Plaj",
+  "popularity": 60
+ }
+]
