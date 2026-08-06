@@ -1,17 +1,14 @@
 import Foundation
 import FirebaseFirestore
 
-/// ⚠️ GEÇİCİ MİMARİ NOTU
-/// Bu servis normalde `submitTrip` Cloud Function'ını çağırıyordu (bkz. functions/index.js).
-/// Blaze faturalandırma planı henüz aktif olmadığından (Cloud Functions Spark planda
-/// çalışmıyor), bu dosya doğrudan Firestore'a yazacak şekilde geçici olarak değiştirildi.
-/// Blaze aktif olduğunda: `firebase deploy --only functions` çalıştır, sonra bu dosyayı
-/// önceki (Cloud Function çağıran) haline geri al — git geçmişinde duruyor.
+/// Seyahat oluşturma, yol arkadaşı bulma ve seyahat geçmişi.
 ///
-/// Kaybedilen sunucu-taraflı garantiler (geçici olarak client'a güveniyoruz):
-/// - Uçuş gerçeklik kontrolü (AviationStack) artık yapılmıyor — API anahtarı client'ta
-///   güvenle tutulamayacağından, uçuş seyahatleri artık yalnızca biniş kartı taranarak
-///   (belge doğrulaması) "doğrulanmış" sayılabiliyor; elle giriş her zaman `isVerified = false`.
+/// MİMARİ NOTU: Cloud Functions kullanılmıyor (Blaze planı açılamadı), client
+/// doğrudan Firestore'a yazıyor. Bunun iki sonucu var:
+///  - Uçuş gerçeklik kontrolü (AviationStack) yapılamıyor; yalnızca biniş kartı
+///    taranarak doğrulanan seyahatler "doğrulanmış" sayılıyor.
+///  - PNR / rezervasyon kodu herkese açık `trips` dokümanında tutulamaz
+///    (bkz. firestore.rules) — `tripSecrets/{tripId}` koleksiyonunda durur.
 final class TripService {
 
     static let shared = TripService()
@@ -22,17 +19,19 @@ final class TripService {
 
     enum TripServiceError: LocalizedError {
         case documentAlreadyUsed
-        case server(String)
+        case eksikBilgi(String)
 
         var errorDescription: String? {
             switch self {
             case .documentAlreadyUsed:
                 return "Bu belge/biniş kartı daha önce başka bir hesap tarafından kullanılmış."
-            case .server(let message):
-                return message
+            case .eksikBilgi(let mesaj):
+                return mesaj
             }
         }
     }
+
+    // MARK: - Seyahat oluşturma
 
     func submitTrip(
         uid: String,
@@ -45,10 +44,17 @@ final class TripService {
         documentHash: String?
     ) async throws -> Trip {
 
-        // Belge tekilliği kontrolü — Cloud Function yerine doğrudan Firestore transaction.
-        // Güvenlik, "documentClaims/{hash}" üzerindeki firestore.rules'daki
-        // `allow update: if false` kuralıyla sağlanıyor: bir kez oluşturulan kayıt
-        // hiçbir client tarafından üzerine yazılamaz.
+        let yer = locationIdentifier.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !yer.isEmpty else {
+            throw TripServiceError.eksikBilgi(
+                type == .flight ? "Sefer kodunu girmelisin." : "Otel adını girmelisin.")
+        }
+        guard endDate > startDate else {
+            throw TripServiceError.eksikBilgi("Bitiş tarihi başlangıçtan sonra olmalı.")
+        }
+
+        // Belge tekilliği — bir kez yazılan kayıt kurallar gereği güncellenemez,
+        // yani aynı biniş kartı ikinci bir hesaba geçemez.
         if let documentHash {
             let claimRef = db.collection("documentClaims").document(documentHash)
             do {
@@ -66,7 +72,8 @@ final class TripService {
                     }
                     if !snapshot.exists {
                         transaction.setData([
-                            "uid": uid, "tripType": type == .flight ? "flight" : "hotel",
+                            "uid": uid,
+                            "tripType": type == .flight ? "flight" : "hotel",
                             "createdAt": FieldValue.serverTimestamp(),
                         ], forDocument: claimRef)
                     }
@@ -77,17 +84,28 @@ final class TripService {
             }
         }
 
-        // Uçuş gerçeklik kontrolü (AviationStack) Cloud Function olmadan güvenle
-        // yapılamıyor — bu yüzden yalnızca belge (biniş kartı) doğrulamasıyla gelen
-        // uçuşlar "doğrulanmış" sayılıyor. Blaze'e geçilince bu satır kaldırılıp
-        // gerçek API kontrolü geri gelecek.
         let isVerified = verificationMethod == .document
+
+        // Aynı yer için hâlâ aktif bir seyahat varsa yenisini AÇMA — tarihlerini
+        // güncelle. Aksi halde uygulamayı her açıp seyahat girdiğinde yeni bir
+        // doküman oluşuyor ve karşı taraf seni listede birden çok kez görüyor.
+        if let mevcut = await mevcutAktifSeyahat(uid: uid, locationIdentifier: yer) {
+            try await db.collection("trips").document(mevcut).updateData([
+                "startDate": Timestamp(date: startDate),
+                "endDate": Timestamp(date: endDate),
+            ])
+            try? await yaziReferansKodu(tripId: mevcut, uid: uid, referenceCode: referenceCode)
+            return Trip(
+                id: mevcut, type: type, referenceCode: referenceCode,
+                locationIdentifier: yer, startDate: startDate, endDate: endDate,
+                isVerified: isVerified, verificationMethod: verificationMethod
+            )
+        }
 
         let dto = TripDTO(
             ownerUid: uid,
             type: type == .flight ? "flight" : "hotel",
-            referenceCode: referenceCode,
-            locationIdentifier: locationIdentifier,
+            locationIdentifier: yer,
             startDate: Timestamp(date: startDate),
             endDate: Timestamp(date: endDate),
             isVerified: isVerified,
@@ -99,23 +117,50 @@ final class TripService {
         )
 
         let ref = try db.collection("trips").addDocument(from: dto)
+        try? await yaziReferansKodu(tripId: ref.documentID, uid: uid, referenceCode: referenceCode)
 
         return Trip(
             id: ref.documentID, type: type, referenceCode: referenceCode,
-            locationIdentifier: locationIdentifier, startDate: startDate, endDate: endDate,
+            locationIdentifier: yer, startDate: startDate, endDate: endDate,
             isVerified: isVerified, verificationMethod: verificationMethod
         )
     }
 
+    /// PNR / rezervasyon kodunu yalnızca sahibinin okuyabildiği koleksiyona yazar.
+    private func yaziReferansKodu(tripId: String, uid: String, referenceCode: String) async throws {
+        let kod = referenceCode.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !kod.isEmpty else { return }
+        try await db.collection("tripSecrets").document(tripId)
+            .setData(from: TripSecretDTO(ownerUid: uid, referenceCode: kod))
+    }
+
+    func referansKodu(tripId: String) async -> String {
+        guard let snap = try? await db.collection("tripSecrets").document(tripId).getDocument(),
+              let dto = try? snap.data(as: TripSecretDTO.self) else { return "" }
+        return dto.referenceCode
+    }
+
+    private func mevcutAktifSeyahat(uid: String, locationIdentifier: String) async -> String? {
+        guard let snapshot = try? await db.collection("trips")
+            .whereField("ownerUid", isEqualTo: uid)
+            .getDocuments() else { return nil }
+
+        let simdi = Date()
+        return snapshot.documents.first { doc in
+            guard let dto = try? doc.data(as: TripDTO.self) else { return false }
+            return dto.locationIdentifier == locationIdentifier
+                && dto.endDate.dateValue().addingTimeInterval(24 * 60 * 60) > simdi
+        }?.documentID
+    }
+
+    // MARK: - Yol arkadaşları
+
     /// Aynı `locationIdentifier` + tarih aralığını paylaşan, gizli modda olmayan
-    /// ve birbirini engellememiş diğer kullanıcıları gerçek zamanlı dinler.
+    /// ve birbirini engellememiş kullanıcıları gerçek zamanlı dinler.
     ///
     /// Tarih çakışması: (onun başlangıcı <= benim bitişim) VE (onun bitişi >= benim başlangıcım).
-    /// Firestore aynı sorguda iki farklı alanda aralık filtresine izin vermediği için
-    /// ilk koşul sorguda, ikincisi client tarafında uygulanıyor.
-    ///
-    /// NOT: Bu sorgu için Firestore bileşik dizin ister. İlk çalıştırmada konsolda
-    /// çıkan hata mesajındaki bağlantıya tıklayarak dizini tek tuşla oluşturabilirsin.
+    /// Firestore aynı sorguda iki farklı alanda aralık filtresine izin vermediği
+    /// için ilk koşul sorguda, ikincisi client tarafında.
     func listenFellowTravelers(
         tripDocId: String,
         locationIdentifier: String,
@@ -137,25 +182,33 @@ final class TripService {
                 }
 
                 Task {
-                    // Aynı kullanıcının birden fazla trip'i olabilir; her biri için
-                    // ayrı okuma yapmamak adına users belgelerini önbelleğe alıyoruz.
                     var userCache: [String: UserDTO] = [:]
+                    var beniEngelleyenler = Set<String>()
+                    var kontrolEdilenler = Set<String>()
                     var results: [TripFellowTraveler] = []
-                    // Aynı kişi aynı yer için birden fazla seyahat kaydetmiş
-                    // olabilir (uygulamayı kapatıp tekrar eklediğinde). Listede
-                    // bir kez görünsün.
+                    // Aynı kişi aynı yer için birden fazla kayıt açmış olabilir;
+                    // listede bir kez görünsün.
                     var eklenenSahipler = Set<String>()
 
                     for doc in docs where doc.documentID != tripDocId {
                         guard let trip = try? doc.data(as: TripDTO.self) else { continue }
-
-                        // Tarih çakışmasının ikinci yarısı.
                         guard trip.endDate.dateValue() >= myStartDate else { continue }
 
                         let ownerUid = trip.ownerUid
                         guard ownerUid != currentUid,
                               !myBlockedUids.contains(ownerUid),
                               !eklenenSahipler.contains(ownerUid) else { continue }
+
+                        // "O beni engellemiş mi?" — engelleme listesi artık herkese
+                        // açık değil (userSecrets), bu yüzden blocks kaydına bakıyoruz.
+                        if !kontrolEdilenler.contains(ownerUid) {
+                            kontrolEdilenler.insert(ownerUid)
+                            if let blok = try? await self.db.collection("blocks")
+                                .document("\(ownerUid)_\(currentUid)").getDocument(), blok.exists {
+                                beniEngelleyenler.insert(ownerUid)
+                            }
+                        }
+                        guard !beniEngelleyenler.contains(ownerUid) else { continue }
 
                         let userDto: UserDTO
                         if let cached = userCache[ownerUid] {
@@ -167,8 +220,7 @@ final class TripService {
                             userDto = fetched
                         }
 
-                        guard userDto.isIncognito == false,
-                              !userDto.blockedUids.contains(currentUid) else { continue }
+                        guard userDto.isIncognito == false else { continue }
 
                         let user = AppUser(
                             id: userDto.id ?? ownerUid,
@@ -176,7 +228,8 @@ final class TripService {
                             age: userDto.age,
                             bio: userDto.bio,
                             avatarSystemImage: "person.crop.circle.fill",
-                            intentTags: userDto.intentTags.compactMap { IntentTag(rawValue: $0) }
+                            intentTags: userDto.intentTags.compactMap { IntentTag(rawValue: $0) },
+                            isVerified: userDto.isVerified
                         )
 
                         results.append(TripFellowTraveler(
@@ -202,9 +255,8 @@ final class TripService {
             }
     }
 
-    /// Kullanıcının bu seyahatte uğramayı planladığı noktaları günceller.
-    /// GEÇİCİ: Cloud Function yerine doğrudan yazma — firestore.rules yalnızca
-    /// trip sahibinin kendi trip dokümanını güncelleyebilmesine izin veriyor.
+    // MARK: - Güzergah
+
     func updateRoute(tripId: String, waypoints: [RouteWaypoint]) async throws {
         let waypointMaps = waypoints.map {
             [
@@ -215,37 +267,55 @@ final class TripService {
         try await db.collection("trips").document(tripId).updateData(["plannedWaypoints": waypointMaps])
     }
 
-    /// Uygulama yeniden açıldığında kullanıcının devam eden seyahatini bulur.
-    /// Yalnızca eşitlik sorgusu kullanıyor (bileşik dizin gerektirmesin diye),
-    /// süre kontrolü ve sıralama client tarafında yapılıyor.
-    func aktifSeyahatiGetir(uid: String) async -> (docId: String, trip: Trip)? {
+    // MARK: - Seyahat listesi
+
+    /// Kullanıcının tüm seyahatleri, yeniden eskiye. Ana sayfadaki geçmiş listesi
+    /// ve aktif seyahat tespiti bunu kullanır.
+    func seyahatlerim(uid: String) async -> [(docId: String, trip: Trip)] {
         guard let snapshot = try? await db.collection("trips")
             .whereField("ownerUid", isEqualTo: uid)
-            .getDocuments() else { return nil }
+            .getDocuments() else { return [] }
 
-        let simdi = Date()
-        let adaylar = snapshot.documents.compactMap { doc -> (String, TripDTO)? in
-            guard let dto = try? doc.data(as: TripDTO.self) else { return nil }
-            // Seyahat bitiminden 24 saat sonrasına kadar aktif sayılır.
-            guard dto.endDate.dateValue().addingTimeInterval(24 * 60 * 60) > simdi else { return nil }
-            return (doc.documentID, dto)
+        return snapshot.documents
+            .compactMap { doc -> (String, Trip)? in
+                guard let dto = try? doc.data(as: TripDTO.self) else { return nil }
+                return (doc.documentID, Trip(
+                    id: doc.documentID,
+                    type: dto.type == "flight" ? .flight : .hotel,
+                    referenceCode: "",
+                    locationIdentifier: dto.locationIdentifier,
+                    startDate: dto.startDate.dateValue(),
+                    endDate: dto.endDate.dateValue(),
+                    isVerified: dto.isVerified,
+                    verificationMethod: TripVerificationMethod(rawValue: dto.verificationMethod) ?? .manual,
+                    plannedWaypoints: dto.plannedWaypoints
+                ))
+            }
+            .sorted { $0.1.startDate > $1.1.startDate }
+    }
+
+    /// Bitişinden 24 saat geçmemiş seyahat "aktif" sayılır.
+    static func aktifMi(_ trip: Trip) -> Bool {
+        trip.endDate.addingTimeInterval(24 * 60 * 60) > Date()
+    }
+
+    func aktifSeyahatiGetir(uid: String) async -> (docId: String, trip: Trip)? {
+        await seyahatlerim(uid: uid)
+            .filter { Self.aktifMi($0.trip) }
+            .min { $0.trip.startDate < $1.trip.startDate }
+    }
+
+    // MARK: - Silme (hesap silme akışı ve kullanıcı isteği)
+
+    func seyahatSil(tripId: String) async throws {
+        try? await db.collection("tripSecrets").document(tripId).delete()
+        try await db.collection("trips").document(tripId).delete()
+    }
+
+    func tumSeyahatleriSil(uid: String) async {
+        for (docId, _) in await seyahatlerim(uid: uid) {
+            try? await seyahatSil(tripId: docId)
         }
-        // Birden fazla varsa en yakın tarihli olanı al.
-        guard let (docId, dto) = adaylar.min(by: { $0.1.startDate.dateValue() < $1.1.startDate.dateValue() })
-        else { return nil }
-
-        let trip = Trip(
-            id: docId,
-            type: dto.type == "flight" ? .flight : .hotel,
-            referenceCode: dto.referenceCode,
-            locationIdentifier: dto.locationIdentifier,
-            startDate: dto.startDate.dateValue(),
-            endDate: dto.endDate.dateValue(),
-            isVerified: dto.isVerified,
-            verificationMethod: TripVerificationMethod(rawValue: dto.verificationMethod) ?? .manual,
-            plannedWaypoints: dto.plannedWaypoints
-        )
-        return (docId, trip)
     }
 
     func stopListening() {
