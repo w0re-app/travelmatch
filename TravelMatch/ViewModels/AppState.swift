@@ -119,6 +119,16 @@ final class AppState: ObservableObject {
         }
     }
 
+    // MARK: - Otel önerileri
+
+    @Published var otelOnerileri: [String] = []
+
+    func otelOnerileriniGetir(il: String) {
+        Task {
+            otelOnerileri = await TripService.shared.otelOnerileri(il: il)
+        }
+    }
+
     // MARK: - Seyahatler
 
     func seyahatleriYenile(uid: String? = nil) async {
@@ -149,6 +159,8 @@ final class AppState: ObservableObject {
         locationIdentifier: String,
         startDate: Date,
         endDate: Date,
+        il: String? = nil,
+        ilce: String? = nil,
         verificationMethod: TripVerificationMethod = .manual,
         documentHash: String? = nil
     ) {
@@ -161,6 +173,7 @@ final class AppState: ObservableObject {
                 let trip = try await TripService.shared.submitTrip(
                     uid: uid, type: type, referenceCode: referenceCode,
                     locationIdentifier: locationIdentifier, startDate: startDate, endDate: endDate,
+                    il: il, ilce: ilce,
                     verificationMethod: verificationMethod, documentHash: documentHash
                 )
                 self.currentTrip = trip
