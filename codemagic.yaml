@@ -233,3 +233,28 @@ workflows:
         notify:
           success: true
           failure: true
+
+  deploy-edge-functions:
+    name: TravelMatch — Supabase Edge Function Deploy
+    max_build_duration: 15
+    instance_type: linux
+    # Elle çalıştırılır. supabase/functions altındaki fonksiyonları yayınlar.
+    environment:
+      groups:
+        - supabase_deploy   # SUPABASE_ACCESS_TOKEN, SUPABASE_PROJECT_REF
+      node: latest
+    scripts:
+      - name: Edge Function'ı deploy et
+        script: |
+          cd $CM_BUILD_DIR
+          npx --yes supabase@latest functions deploy bildirim-gonder \
+            --project-ref "$SUPABASE_PROJECT_REF" \
+            --no-verify-jwt
+
+    publishing:
+      email:
+        recipients:
+          - umut.gurrkann@icloud.com
+        notify:
+          success: true
+          failure: true
