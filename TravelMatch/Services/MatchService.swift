@@ -26,7 +26,9 @@ final class MatchService {
         }
     }
 
-    func sendMatchRequest(fromUid: String, toUid: String, tripId: String) async throws {
+    /// Oluşan eşleşmenin kimliğini döner — bildirim göndermek için gerekiyor.
+    @discardableResult
+    func sendMatchRequest(fromUid: String, toUid: String, tripId: String) async throws -> String {
         // Engelleme kontrolü (her iki yön).
         let blockedByMe = try await db.collection("blocks").document("\(fromUid)_\(toUid)").getDocument()
         let blockedMe = try await db.collection("blocks").document("\(toUid)_\(fromUid)").getDocument()
@@ -49,7 +51,8 @@ final class MatchService {
         let tripEnd = (tripDoc.data()?["endDate"] as? Timestamp)?.dateValue() ?? Date()
         let expiresAt = tripEnd.addingTimeInterval(24 * 60 * 60)
 
-        try await db.collection("matches").addDocument(data: [
+        let ref = db.collection("matches").document()
+        try await ref.setData([
             "tripId": tripId,
             "participants": [fromUid, toUid],
             "initiatedBy": fromUid,
@@ -57,6 +60,7 @@ final class MatchService {
             "createdAt": FieldValue.serverTimestamp(),
             "expiresAt": Timestamp(date: expiresAt),
         ])
+        return ref.documentID
     }
 
     func respond(matchId: String, accept: Bool) async throws {
