@@ -40,6 +40,8 @@ final class TripService {
         locationIdentifier: String,
         startDate: Date,
         endDate: Date,
+        il: String?,
+        ilce: String?,
         verificationMethod: TripVerificationMethod,
         documentHash: String?
     ) async throws -> Trip {
@@ -90,10 +92,13 @@ final class TripService {
         // güncelle. Aksi halde uygulamayı her açıp seyahat girdiğinde yeni bir
         // doküman oluşuyor ve karşı taraf seni listede birden çok kez görüyor.
         if let mevcut = await mevcutAktifSeyahat(uid: uid, locationIdentifier: yer) {
-            try await db.collection("trips").document(mevcut).updateData([
+            var guncel: [String: Any] = [
                 "startDate": Timestamp(date: startDate),
                 "endDate": Timestamp(date: endDate),
-            ])
+            ]
+            if let il { guncel["il"] = il }
+            if let ilce { guncel["ilce"] = ilce }
+            try await db.collection("trips").document(mevcut).updateData(guncel)
             try? await yaziReferansKodu(tripId: mevcut, uid: uid, referenceCode: referenceCode)
             return Trip(
                 id: mevcut, type: type, referenceCode: referenceCode,
@@ -106,6 +111,8 @@ final class TripService {
             ownerUid: uid,
             type: type == .flight ? "flight" : "hotel",
             locationIdentifier: yer,
+            il: il,
+            ilce: ilce,
             startDate: Timestamp(date: startDate),
             endDate: Timestamp(date: endDate),
             isVerified: isVerified,
@@ -152,6 +159,32 @@ final class TripService {
             return dto.locationIdentifier == locationIdentifier
                 && dto.endDate.dateValue().addingTimeInterval(24 * 60 * 60) > simdi
         }?.documentID
+    }
+
+    // MARK: - Otel önerileri
+
+    /// Seçilen ildeki otel adlarını, daha önce başka kullanıcıların girdiği
+    /// kayıtlardan toplar. Elimizde hazır bir otel veri seti olmadığı için
+    /// liste kullanımla birlikte büyür; aynı zamanda yazım farklarından doğan
+    /// eşleşme kayıplarını da önler (kullanıcı listeden seçince birebir aynı
+    /// metin kaydedilir).
+    ///
+    /// Yalnızca eşitlik sorgusu kullanır — bileşik dizin gerekmez.
+    func otelOnerileri(il: String) async -> [String] {
+        guard let snapshot = try? await db.collection("trips")
+            .whereField("il", isEqualTo: il)
+            .getDocuments() else { return [] }
+
+        var adlar: [String: Int] = [:]
+        for doc in snapshot.documents {
+            guard let dto = try? doc.data(as: TripDTO.self), dto.type == "hotel" else { continue }
+            let ad = dto.locationIdentifier.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !ad.isEmpty else { continue }
+            adlar[ad, default: 0] += 1
+        }
+        // Çok kullanılan isimler üstte.
+        return adlar.sorted { $0.value == $1.value ? $0.key < $1.key : $0.value > $1.value }
+                    .map(\.key)
     }
 
     // MARK: - Yol arkadaşları

@@ -30,6 +30,9 @@ struct TripDTO: Codable {
     var ownerUid: String
     var type: String              // "flight" | "hotel"
     var locationIdentifier: String
+    /// Otel seyahatlerinde şehir/ilçe — otel adı önerileri ve filtreleme için.
+    var il: String?
+    var ilce: String?
     var startDate: Timestamp
     var endDate: Timestamp
     var isVerified: Bool
