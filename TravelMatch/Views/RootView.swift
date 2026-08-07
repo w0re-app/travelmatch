@@ -5,17 +5,29 @@ struct RootView: View {
 
     var body: some View {
         Group {
-            if appState.isLoggedIn {
-                // Girişten sonra doğrudan ana sayfa açılır. Seyahat ekleme artık
-                // zorunlu bir ilk adım değil, ana sayfadan başlatılan bir akış.
-                MainTabView()
-            } else {
+            if !appState.isLoggedIn {
                 LoginView()
+            } else if !appState.profilYuklendi {
+                yukleniyor
+            } else if !appState.profilTamam {
+                // Yeni kullanıcı önce kendini tanıtır; seyahat ekleme ana
+                // sayfadan, kendi istediği zaman yapılır.
+                ProfileEditView(user: appState.currentUser, ilkKurulum: true)
+            } else {
+                MainTabView()
             }
         }
         .animation(.default, value: appState.isLoggedIn)
+        .animation(.default, value: appState.profilYuklendi)
         .preferredColorScheme(.dark)
         .tint(Theme.magenta)
+    }
+
+    private var yukleniyor: some View {
+        ZStack {
+            NightclubBackground()
+            ProgressView().tint(Theme.magenta).controlSize(.large)
+        }
     }
 }
 
