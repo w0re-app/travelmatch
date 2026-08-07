@@ -12,6 +12,16 @@ final class AppState: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var currentUser: AppUser = .bosKullanici
     @Published var authErrorMessage: String?
+    /// Firestore'dan profil okunana kadar hangi ekranın açılacağına karar
+    /// veremeyiz — aksi halde kurulmuş profili olan kullanıcıya bir an
+    /// "profilini tamamla" ekranı görünüyor.
+    @Published var profilYuklendi = false
+
+    /// Yeni kullanıcı önce profilini doldurur, seyahat ekleme sonra gelir.
+    var profilTamam: Bool {
+        let ad = currentUser.fullName.trimmingCharacters(in: .whitespacesAndNewlines)
+        return !ad.isEmpty && ad != "Yeni Kullanıcı" && currentUser.age >= 18
+    }
 
     // Trip
     @Published var currentTrip: Trip?
@@ -80,6 +90,7 @@ final class AppState: ObservableObject {
         currentTrip = nil
         currentTripDocId = nil
         verificationState = .idle
+        profilYuklendi = false
         seyahatlerim = []
         fellowTravelers = []
         matches = []
@@ -111,12 +122,14 @@ final class AppState: ObservableObject {
                 blockedUids: engellenenler
             )
         } else {
-            let draft = UserDTO(fullName: "Yeni Kullanıcı", age: 18, bio: "",
+            // Adı boş bırakıyoruz — "profil tamamlandı mı" kontrolü buna bakıyor.
+            let draft = UserDTO(fullName: "", age: 18, bio: "",
                                 intentTags: [], isIncognito: false, isVerified: false, createdAt: nil)
             try? ref.setData(from: draft)
             currentUser = AppUser(id: uid, fullName: draft.fullName, age: draft.age, bio: draft.bio,
                                   avatarSystemImage: "person.crop.circle.fill", intentTags: [])
         }
+        profilYuklendi = true
     }
 
     // MARK: - Otel önerileri
@@ -291,9 +304,11 @@ final class AppState: ObservableObject {
         }
         Task {
             do {
-                try await MatchService.shared.sendMatchRequest(
+                let matchId = try await MatchService.shared.sendMatchRequest(
                     fromUid: self.currentUser.id, toUid: traveler.user.id, tripId: tripId
                 )
+                await BildirimService.gonder(tur: .eslesmeIstegi,
+                                             hedefUid: traveler.user.id, matchId: matchId)
             } catch {
                 if let index = self.fellowTravelers.firstIndex(where: { $0.id == traveler.id }) {
                     self.fellowTravelers[index].matchStatus = .none
@@ -307,6 +322,10 @@ final class AppState: ObservableObject {
         Task {
             do {
                 try await MatchService.shared.respond(matchId: match.id, accept: accept)
+                if accept {
+                    await BildirimService.gonder(tur: .eslesmeKabul,
+                                                 hedefUid: match.otherUser.id, matchId: match.id)
+                }
             } catch {
                 self.matchErrorMessage = error.localizedDescription
             }
@@ -403,6 +422,8 @@ final class AppState: ObservableObject {
         Task {
             do {
                 try await ChatService.shared.sendMessage(matchId: match.id, senderUid: uid, content: trimmed)
+                await BildirimService.gonder(tur: .yeniMesaj,
+                                             hedefUid: match.otherUser.id, matchId: match.id)
             } catch {
                 // Sessiz başarısızlık kullanıcıya mesaj gitmiş gibi görünüyordu.
                 self.matchErrorMessage = "Mesaj gönderilemedi: \(error.localizedDescription)"
@@ -415,6 +436,8 @@ final class AppState: ObservableObject {
         Task {
             do {
                 try await ChatService.shared.sendImage(matchId: match.id, senderUid: uid, image: image)
+                await BildirimService.gonder(tur: .yeniMesaj,
+                                             hedefUid: match.otherUser.id, matchId: match.id)
             } catch {
                 self.matchErrorMessage = "Fotoğraf gönderilemedi: \(error.localizedDescription)"
             }
