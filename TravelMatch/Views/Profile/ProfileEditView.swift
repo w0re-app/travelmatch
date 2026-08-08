@@ -13,9 +13,13 @@ struct ProfileEditView: View {
     @State private var photoItem: PhotosPickerItem?
 
     private let userId: String
+    /// İlk kurulumda bu ekran bir sheet değil, uygulamanın kendisi olarak
+    /// açılır: vazgeçme yok, kaydedince ana sayfaya geçilir.
+    private let ilkKurulum: Bool
 
-    init(user: AppUser) {
+    init(user: AppUser, ilkKurulum: Bool = false) {
         userId = user.id
+        self.ilkKurulum = ilkKurulum
         _fullName = State(initialValue: user.fullName)
         _age = State(initialValue: user.age)
         _bio = State(initialValue: user.bio)
@@ -32,6 +36,15 @@ struct ProfileEditView: View {
                 NightclubBackground()
 
                 Form {
+                    if ilkKurulum {
+                        Section {
+                            Text("Seni tanıyalım. Bu bilgiler, aynı seyahati paylaştığın kişilerin göreceği profilini oluşturur.")
+                                .font(.subheadline)
+                                .foregroundStyle(Theme.textSecondary)
+                                .listRowBackground(Color.clear)
+                        }
+                    }
+
                     Section {
                         photoRow
                     } header: {
@@ -78,34 +91,29 @@ struct ProfileEditView: View {
                     } header: {
                         Text("Seyahatte amacın ne?").foregroundStyle(Theme.textTertiary)
                     }
-
-                    if age < 18 {
-                        Section {
-                            Text("Uygulamayı kullanmak için en az 18 yaşında olman gerekiyor.")
-                                .font(.caption)
-                                .foregroundStyle(Theme.rose)
-                                .listRowBackground(Color.clear)
-                        }
-                    }
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("Profili Düzenle")
+            .navigationTitle(ilkKurulum ? "Profilini Oluştur" : "Profili Düzenle")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Vazgeç") { dismiss() }
+                if !ilkKurulum {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Vazgeç") { dismiss() }
+                    }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Kaydet") {
+                    Button(ilkKurulum ? "Devam Et" : "Kaydet") {
                         appState.updateProfile(
                             fullName: fullName.trimmingCharacters(in: .whitespaces),
                             age: age,
                             bio: bio,
                             intentTags: Array(selectedTags)
                         )
-                        dismiss()
+                        // İlk kurulumda sheet değiliz; profil tamamlanınca
+                        // RootView zaten ana sayfaya geçiyor.
+                        if !ilkKurulum { dismiss() }
                     }
                     .disabled(!isValid || appState.avatarYukleniyor)
                     .fontWeight(.bold)
